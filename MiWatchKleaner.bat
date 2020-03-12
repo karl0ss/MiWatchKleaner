@@ -42,7 +42,7 @@ echo.
 echo  _________________________________________________________________________________
 echo. && echo.
 %ch% 0a
-echo    2 - Install Google Apps
+echo    2 - Install Apps (Not Working Yet)
 echo.
 %ch% 08
 %ch% 0f
@@ -65,7 +65,7 @@ echo  Choose an option:
 echo. && choice /c:1234E /M ""
 
     IF %ERRORLEVEL% == 1 GOTO REMOVEAPPS
-	IF %ERRORLEVEL% == 2 GOTO INSTALLAPPS
+	::IF %ERRORLEVEL% == 2 GOTO INSTALLAPPS
 	IF %ERRORLEVEL% == 3 GOTO STATUS
 	IF %ERRORLEVEL% == 5 GOTO EXIT
 	
