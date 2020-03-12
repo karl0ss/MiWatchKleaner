@@ -10,7 +10,7 @@ echo   _________________________________________________________________________
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 %ch% 0f
-echo			             KMod MiWatch Cleaner 1.0
+echo			             MiWatchKleaner 1.0
 %ch% 00
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -27,7 +27,7 @@ echo. && echo. && echo.
 echo   ___________________________________________________________________________________
 %ch% 0f
 echo. && echo. && echo.
-echo                            KMod MiWatch Cleaner 1.0
+echo                            MiWatchKleaner 1.0
 echo.
 echo                                    --   MENU  --
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
