@@ -49,7 +49,7 @@ echo.
 echo   _________________________________________________________________________________
 echo. && echo.
 %ch% 0a
-echo    3 - Install Apps
+echo    3 - Install Compatible Apps
 echo.
 %ch% 08
 %ch% 0f
@@ -131,6 +131,8 @@ echo   _________________________________________________________________________
 echo. && echo.
 %ch% 0a
 echo    1 - INSTALL Google Apps
+echo    (Google Fit, Google Maps, Google Quick Search,
+echo      Google Translate, Google TTS, WearOs Keyboard)
 echo.
 %ch% 08
 %ch% 0f
@@ -138,6 +140,8 @@ echo  __________________________________________________________________________
 echo. && echo.
 %ch% 0a
 echo    2 - INSTALL Other Apps
+echo    (AccuWeather, Alberto Store, PujieBlack,
+echo      Ultimate Alexa)
 echo.
 %ch% 08
 %ch% 0f
@@ -208,10 +212,39 @@ GOTO START
 :GOOGLE
 cls
 color 47
-::%adb% shell content insert --uri content://settings/system --bind name:s:status_bar_show_battery_percent --bind value:i:1
+echo. Downloading Latest Google Fit
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleFit.apk -P ./data/apps
+echo. Installing Latest Google Fit
+%adb% install data/apps/GoogleFit.apk
+echo. Latest Google Fit Installed
+echo. Downloading Latest Google Maps
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleMaps.apk -P ./data/apps
+echo. Installing Latest Google Maps
+%adb% install data/apps/GoogleMaps.apk
+echo. Latest Google Maps Installed
+echo. Downloading Latest Google Quick Search
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleQuickSearch.apk -P ./data/apps
+echo. Installing Latest Google Quick Search
+%adb% install data/apps/GoogleQuickSearch.apk
+echo. Latest Google Quick Search Installed
+echo. Downloading Latest GoogleTTS
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleTTS.apk -P ./data/apps
+echo. Installing Latest GoogleTTS
+%adb% install data/apps/GoogleTTS.apk
+echo. Latest GoogleTTS Installed
+echo. Downloading Latest Google Translate
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleTranslate.apk -P ./data/apps
+echo. Installing Latest Google Translate
+%adb% install data/apps/GoogleTranslate.apk
+echo. Latest Google Translate Installed
+echo. Downloading Latest Google Wear Keyboard
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/WearKeyboard.apk -P ./data/apps
+echo. Installing Latest Google Wear Keyboard
+%adb% install data/apps/WearKeyboard.apk
+echo. Latest Google Wear Keyboard Installed
 Timeout /t 5 >data/null
 %ch% 4F
-echo. ******** Battery Percentage Enabled *****
+echo. ******** All Google Apps Installed *****
 Timeout /t 2 >data/null
 echo.-----------------------------------------------------------------------------------
 %ch% 47
@@ -230,10 +263,25 @@ GOTO START
 cls
 color 47
 echo. Downloading Latest Pujie Black
-data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Pujie.apk -P ./data/apps
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/Pujie.apk -P ./data/apps
 echo. Installing Latest Pujie Black
 %adb% install data/apps/Pujie.apk
 echo. Latest Pujie Black Installed
+echo. Downloading Latest AccuWeather
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/AccuWeather.apk -P ./data/apps
+echo. Installing Latest AccuWeather
+%adb% install data/apps/AccuWeather.apk
+echo. Latest AccuWeather Installed
+echo. Downloading Latest Ultimate Alexa
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/UltimateAlexa.apk -P ./data/apps
+echo. Installing Latest Ultimate Alexa
+%adb% install data/apps/UltimateAlexa.apk
+echo. Latest Ultimate Alexa Installed
+echo. Downloading Latest Alberto Store
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/AlbertoStore.apk -P ./data/apps
+echo. Installing Latest Alberto Store
+%adb% install data/apps/AlbertoStore.apk
+echo. Latest Alberto Store Installed
 Timeout /t 5 >data/null
 %ch% 4F
 echo. ******** Other Apps All Installed *****
