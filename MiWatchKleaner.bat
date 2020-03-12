@@ -35,21 +35,21 @@ Timeout /t 1 >data/null
 echo   _________________________________________________________________________________
 echo. && echo.
 %ch% 0a
-echo    1 - Remove Installed Xiaomi Apps
+echo    1 - Connect to MiWatch via Wifi
 echo.
 %ch% 08
 %ch% 0f
 echo  _________________________________________________________________________________
 echo. && echo.
 %ch% 0a
-echo    2 - Install Apps (Not Working Yet)
+echo    2 - Remove Installed Xiaomi Apps
 echo.
 %ch% 08
 %ch% 0f
 echo   _________________________________________________________________________________
 echo. && echo.
 %ch% 0a
-echo    3 - Connect to MiWatch via Wifi
+echo    3 - Install Apps
 echo.
 %ch% 08
 %ch% 0f
@@ -63,10 +63,10 @@ Timeout /t 1 >data/null
 echo  Choose an option:
 %ch% 00
 echo. && choice /c:1234E /M ""
-
-    IF %ERRORLEVEL% == 1 GOTO REMOVEAPPS
-	IF %ERRORLEVEL% == 2 GOTO INSTALLAPPS
-	IF %ERRORLEVEL% == 3 GOTO STATUS
+	
+	IF %ERRORLEVEL% == 1 GOTO CONNECT
+    IF %ERRORLEVEL% == 2 GOTO REMOVEAPPS
+	IF %ERRORLEVEL% == 3 GOTO INSTALLAPPS
 	IF %ERRORLEVEL% == 5 GOTO EXIT
 	
 :EXIT
@@ -170,7 +170,7 @@ exit
 cls
 color 47
 color 47
-%adb% shell pm uninstalal -k --user 0 com.xiaomi.wear.hotwordle && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.fitness && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.function && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.art && %adb% shell pm uninstall -k --user 0 com.xiaomi.account && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.album && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.decomposite && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.classic && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.tutorial && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.deskclock && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.sportlogger && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.weather && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.charging && %adb% shell pm uninstall -k --user 0 com.xiaomi.mihome && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.anonymous.xiaoai && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.lpa && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.market && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.setupprovider && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.xiaoai && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.card && %adb% shell pm uninstall -k --user 0 com.google.android.inputmethod.pinyin && %adb% shell pm uninstall -k --user 0 com.sogou.ime.wear
+%adb% shell pm uninstall -k --user 0 com.xiaomi.wear.hotwordle && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.fitness && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.function && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.art && %adb% shell pm uninstall -k --user 0 com.xiaomi.account && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.album && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.decomposite && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.watchface.classic && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.tutorial && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.deskclock && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.sportlogger && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.weather && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.charging && %adb% shell pm uninstall -k --user 0 com.xiaomi.mihome && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.anonymous.xiaoai && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.lpa && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.market && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.setupprovider && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.xiaoai && %adb% shell pm uninstall -k --user 0 com.xiaomi.wear.card && %adb% shell pm uninstall -k --user 0 com.google.android.inputmethod.pinyin && %adb% shell pm uninstall -k --user 0 com.sogou.ime.wear
 Timeout /t 10 >data/null
 %ch% 4F
 echo. ******** Apps Removed *****
@@ -185,7 +185,7 @@ pause
 %ch% 00
 GOTO START
 
-:STATUS
+:CONNECT
 cls
 color 47
 set /p miwatchIp=Please enter MiWatch IP Address:
