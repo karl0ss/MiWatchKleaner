@@ -244,6 +244,7 @@ echo. Installing Latest Google Wear Keyboard
 echo. Latest Google Wear Keyboard Installed
 Timeout /t 5 >data/null
 %ch% 4F
+del /S data\apps\*.apk
 echo. ******** All Google Apps Installed *****
 Timeout /t 2 >data/null
 echo.-----------------------------------------------------------------------------------
@@ -284,6 +285,7 @@ echo. Installing Latest Alberto Store
 echo. Latest Alberto Store Installed
 Timeout /t 5 >data/null
 %ch% 4F
+del /S data\apps\*.apk
 echo. ******** Other Apps All Installed *****
 Timeout /t 2 >data/null
 echo.-----------------------------------------------------------------------------------
