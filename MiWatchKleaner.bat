@@ -233,10 +233,10 @@ echo. Downloading Latest Pujie Black
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Pujie.apk -P ./data/apps
 echo. Installing Latest Pujie Black
 %adb% install data/apps/Pujie.apk
-::%adb% shell content insert --uri content://settings/system --bind name:s:status_bar_show_battery_percent --bind value:i:0
+echo. Latest Pujie Black Installed
 Timeout /t 5 >data/null
 %ch% 4F
-echo. ******** Battery Percentage Disabled *****
+echo. ******** Other Apps All Installed *****
 Timeout /t 2 >data/null
 echo.-----------------------------------------------------------------------------------
 %ch% 47
