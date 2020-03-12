@@ -230,7 +230,7 @@ GOTO START
 cls
 color 47
 echo. Downloading Latest Pujie Black
-curl -o data/apps/Pujie.apk http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Pujie.apk
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Pujie.apk -P ./data/apps
 echo. Installing Latest Pujie Black
 %adb% install data/apps/Pujie.apk
 ::%adb% shell content insert --uri content://settings/system --bind name:s:status_bar_show_battery_percent --bind value:i:0
