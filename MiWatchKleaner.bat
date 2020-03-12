@@ -251,7 +251,6 @@ echo.---------------------------------------------------------------------------
 %ch% 47
 Timeout /t 1 >data/null
 echo.
-echo                    Please reboot tablet to see changes
 echo. && echo.
 echo. && echo.
 echo                    Press any key to back to MAIN MEMU
