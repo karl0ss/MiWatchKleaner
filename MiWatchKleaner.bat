@@ -10,7 +10,7 @@ echo   _________________________________________________________________________
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 %ch% 0f
-echo			             MiWatchKleaner 1.1
+echo			             MiWatchKleaner 1.2
 %ch% 00
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -27,7 +27,7 @@ echo. && echo. && echo.
 echo   ___________________________________________________________________________________
 %ch% 0f
 echo. && echo. && echo.
-echo                            MiWatchKleaner 1.1
+echo                            MiWatchKleaner 1.2
 echo.
 echo                                    --   MENU  --
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -242,6 +242,11 @@ data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/Wea
 echo. Installing Latest Google Wear Keyboard
 %adb% install data/apps/WearKeyboard.apk
 echo. Latest Google Wear Keyboard Installed
+echo. Downloading Latest Google Calculator
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleCalc.apk -P ./data/apps
+echo. Installing Latest Google Calculator
+%adb% install data/apps/GoogleCalc.apk
+echo. Latest Google Calculator Installed
 Timeout /t 5 >data/null
 %ch% 4F
 del /S data\apps\*.apk
