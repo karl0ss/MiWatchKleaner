@@ -282,11 +282,6 @@ data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/Ult
 echo. Installing Latest Ultimate Alexa
 %adb% install data/apps/UltimateAlexa.apk
 echo. Latest Ultimate Alexa Installed
-echo. Downloading Latest Alberto Store
-data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/AlbertoStore.apk -P ./data/apps
-echo. Installing Latest Alberto Store
-%adb% install data/apps/AlbertoStore.apk
-echo. Latest Alberto Store Installed
 Timeout /t 5 >data/null
 %ch% 4F
 del /S data\apps\*.apk

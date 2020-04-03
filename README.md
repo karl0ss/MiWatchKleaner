@@ -6,7 +6,7 @@ This allows install of working Google and Other Apps.
 
 Google Fit Google Maps Google Quick Search Google Translate Google TTS GBoard Wear Os
 
-AccuWeather AlbertoStore Puji Black Ultimate Alexa
+AccuWeather Puji Black Ultimate Alexa
 
 Version 1.0
 Initial Version
