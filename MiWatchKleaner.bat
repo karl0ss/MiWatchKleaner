@@ -10,7 +10,7 @@ echo   _________________________________________________________________________
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 %ch% 0f
-echo			             MiWatchKleaner 1.2
+echo			             MiWatchKleaner 1.3
 %ch% 00
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -27,7 +27,7 @@ echo. && echo. && echo.
 echo   ___________________________________________________________________________________
 %ch% 0f
 echo. && echo. && echo.
-echo                            MiWatchKleaner 1.2
+echo                            MiWatchKleaner 1.3
 echo.
 echo                                    --   MENU  --
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -148,7 +148,14 @@ echo.
 echo   _________________________________________________________________________________
 echo. && echo.
 %ch% 0a
-echo    3 - Retrun to Main Menu
+echo    3 - INSTALL MoreLocale
+echo.    
+%ch% 08
+%ch% 0f
+echo   _________________________________________________________________________________
+echo. && echo.
+%ch% 0a
+echo    4 - Retrun to Main Menu
 echo.
 %ch% 08
 %ch% 0f
@@ -165,7 +172,8 @@ echo. && choice /c:123 /M ""
 
     IF %ERRORLEVEL% == 1 GOTO GOOGLE
 	IF %ERRORLEVEL% == 2 GOTO OTHERS
-	IF %ERRORLEVEL% == 3 GOTO START
+	IF %ERRORLEVEL% == 3 GOTO MORELOCALE
+	IF %ERRORLEVEL% == 4 GOTO START
 	
 :EXIT
 exit
@@ -291,7 +299,33 @@ echo.---------------------------------------------------------------------------
 %ch% 47
 Timeout /t 1 >data/null
 echo.
-echo                    Please reboot tablet to see changes
+echo. && echo.
+echo. && echo.
+echo                    Press any key to back to MAIN MEMU
+%ch% 44
+pause
+%ch% 00
+GOTO START
+
+:MORELOCALE
+cls
+color 47
+echo. Downloading Latest MoreLocale
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/MoreLocale.apk -P ./data/apps
+echo. Installing Latest MoreLocale
+%adb% install data/apps/MoreLocale.apk
+echo. Latest MoreLocale Installed
+echo. Running MoreLocale Config
+%adb% shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION
+Timeout /t 5 >data/null
+%ch% 4F
+del /S data\apps\*.apk
+echo. ******** MoreLocale Installed & Enabled *****
+Timeout /t 2 >data/null
+echo.-----------------------------------------------------------------------------------
+%ch% 47
+Timeout /t 1 >data/null
+echo.
 echo. && echo.
 echo. && echo.
 echo                    Press any key to back to MAIN MEMU
