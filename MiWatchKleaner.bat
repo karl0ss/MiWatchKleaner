@@ -223,47 +223,47 @@ color 47
 echo. Downloading Latest Google Fit
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleFit.apk -P ./data/apps
 echo. Installing Latest Google Fit
-%adb% install data/apps/GoogleFit.apk
+%adb% install -r data/apps/GoogleFit.apk
 echo. Latest Google Fit Installed
 echo. Downloading Latest Google Maps
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleMaps.apk -P ./data/apps
 echo. Installing Latest Google Maps
-%adb% install data/apps/GoogleMaps.apk
+%adb% install -r data/apps/GoogleMaps.apk
 echo. Latest Google Maps Installed
 echo. Downloading Latest Google Quick Search
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleQuickSearch.apk -P ./data/apps
 echo. Installing Latest Google Quick Search
-%adb% install data/apps/GoogleQuickSearch.apk
+%adb% install -r data/apps/GoogleQuickSearch.apk
 echo. Latest Google Quick Search Installed
 echo. Downloading Latest GoogleTTS
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleTTS.apk -P ./data/apps
 echo. Installing Latest GoogleTTS
-%adb% install data/apps/GoogleTTS.apk
+%adb% install -r data/apps/GoogleTTS.apk
 echo. Latest GoogleTTS Installed
 echo. Downloading Latest Google Translate
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleTranslate.apk -P ./data/apps
 echo. Installing Latest Google Translate
-%adb% install data/apps/GoogleTranslate.apk
+%adb% install -r data/apps/GoogleTranslate.apk
 echo. Latest Google Translate Installed
 echo. Downloading Latest Google Wear Keyboard
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/WearKeyboard.apk -P ./data/apps
 echo. Installing Latest Google Wear Keyboard
-%adb% install data/apps/WearKeyboard.apk
+%adb% install -r data/apps/WearKeyboard.apk
 echo. Latest Google Wear Keyboard Installed
 echo. Downloading Latest Google Calculator
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleCalc.apk -P ./data/apps
 echo. Installing Latest Google Calculator
-%adb% install data/apps/GoogleCalc.apk
+%adb% install -r data/apps/GoogleCalc.apk
 echo. Latest Google Calculator Installed
 echo. Downloading Latest Google Clock
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleClock.apk -P ./data/apps
 echo. Installing Latest Google Clock
-%adb% install data/apps/GoogleClock.apk
+%adb% install -r data/apps/GoogleClock.apk
 echo. Latest Google Clock Installed
 echo. Downloading Latest Google Services
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleServices.apk -P ./data/apps
 echo. Installing Latest Google Services
-%adb% install data/apps/GoogleServices.apk
+%adb% install -r data/apps/GoogleServices.apk
 echo. Latest Google Services Installed
 Timeout /t 5 >data/null
 %ch% 4F
@@ -288,17 +288,17 @@ color 47
 echo. Downloading Latest Pujie Black
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/Pujie.apk -P ./data/apps
 echo. Installing Latest Pujie Black
-%adb% install data/apps/Pujie.apk
+%adb% install -r data/apps/Pujie.apk
 echo. Latest Pujie Black Installed
 echo. Downloading Latest AccuWeather
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/AccuWeather.apk -P ./data/apps
 echo. Installing Latest AccuWeather
-%adb% install data/apps/AccuWeather.apk
+%adb% install -r data/apps/AccuWeather.apk
 echo. Latest AccuWeather Installed
 echo. Downloading Latest Ultimate Alexa
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/UltimateAlexa.apk -P ./data/apps
 echo. Installing Latest Ultimate Alexa
-%adb% install data/apps/UltimateAlexa.apk
+%adb% install -r data/apps/UltimateAlexa.apk
 echo. Latest Ultimate Alexa Installed
 Timeout /t 5 >data/null
 %ch% 4F
@@ -323,7 +323,7 @@ color 47
 echo. Downloading Latest MoreLocale
 data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/MoreLocale.apk -P ./data/apps
 echo. Installing Latest MoreLocale
-%adb% install data/apps/MoreLocale.apk
+%adb% install -r data/apps/MoreLocale.apk
 echo. Latest MoreLocale Installed
 echo. Running MoreLocale Config
 %adb% shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION
