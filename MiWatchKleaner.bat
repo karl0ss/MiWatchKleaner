@@ -10,7 +10,7 @@ echo   _________________________________________________________________________
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 %ch% 0f
-echo			             MiWatchKleaner 1.3
+echo			             MiWatchKleaner 1.4
 %ch% 00
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -27,7 +27,7 @@ echo. && echo. && echo.
 echo   ___________________________________________________________________________________
 %ch% 0f
 echo. && echo. && echo.
-echo                            MiWatchKleaner 1.3
+echo                            MiWatchKleaner 1.4
 echo.
 echo                                    --   MENU  --
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -255,6 +255,16 @@ data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/Goo
 echo. Installing Latest Google Calculator
 %adb% install data/apps/GoogleCalc.apk
 echo. Latest Google Calculator Installed
+echo. Downloading Latest Google Clock
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleClock.apk -P ./data/apps
+echo. Installing Latest Google Clock
+%adb% install data/apps/GoogleClock.apk
+echo. Latest Google Clock Installed
+echo. Downloading Latest Google Services
+data\wget.exe -q http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleServices.apk -P ./data/apps
+echo. Installing Latest Google Services
+%adb% install data/apps/GoogleServices.apk
+echo. Latest Google Services Installed
 Timeout /t 5 >data/null
 %ch% 4F
 del /S data\apps\*.apk

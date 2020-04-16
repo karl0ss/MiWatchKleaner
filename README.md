@@ -1,3 +1,11 @@
+Version 1.4
+Add Google Clock 
+Update GoogleQuickSearch
+Add Google Services 
+
+Version 1.3
+Add moreLocale
+
 Version 1.2
 Add Google Calculator to Google Install set
 
