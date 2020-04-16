@@ -1,3 +1,6 @@
+Version 1.5
+Remove com.xiaomi.wear.calculator
+
 Version 1.4
 Add Google Clock 
 Update GoogleQuickSearch
