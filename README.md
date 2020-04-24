@@ -1,3 +1,9 @@
+Version 1.6
+Option to re-enable uninstalled applications
+Stop removing com.xiaomi.account
+Stop removing com.xiaomi.mihome
+Stop removing com.xiaomi.wear.market
+
 Version 1.5
 Remove com.xiaomi.wear.calculator
 
