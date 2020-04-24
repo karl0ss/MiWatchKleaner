@@ -1,0 +1,15 @@
+{
+  "name": "miwatchkleaner2.0",
+  "version": "2.0.0",
+  "description": "MiWatch Cleaning Tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://kithub.cf/Karl/MiWatchKleaner.git"
+  },
+  "author": "Karl Hudgell",
+  "license": "ISC"
+}
