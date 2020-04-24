@@ -1,3 +1,6 @@
+Version 1.7
+Option to manually remove any package
+
 Version 1.6
 Option to re-enable uninstalled applications
 Stop removing com.xiaomi.account

@@ -10,7 +10,7 @@ echo   _________________________________________________________________________
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 %ch% 0f
-echo			             MiWatchKleaner 1.6
+echo			             MiWatchKleaner 1.7
 %ch% 00
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -27,7 +27,7 @@ echo. && echo. && echo.
 echo   ___________________________________________________________________________________
 %ch% 0f
 echo. && echo. && echo.
-echo                            MiWatchKleaner 1.6
+echo                            MiWatchKleaner 1.7
 echo.
 echo                                    --   MENU  --
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -102,7 +102,14 @@ echo.
 echo  _________________________________________________________________________________
 echo. && echo.
 %ch% 0a
-echo    2 - Retrun to Main Menu
+echo    2 - Manual Remove Any Package
+echo.
+%ch% 08
+%ch% 0f
+echo   _________________________________________________________________________________
+echo. && echo.
+%ch% 0a
+echo    3 - Retrun to Main Menu
 echo.
 %ch% 08
 %ch% 0f
@@ -118,7 +125,8 @@ echo  Choose an option:
 echo. && choice /c:123 /M ""
 
     IF %ERRORLEVEL% == 1 GOTO REMOVEAPP
-	IF %ERRORLEVEL% == 2 GOTO START
+	IF %ERRORLEVEL% == 2 GOTO REMOVEANYAPP
+	IF %ERRORLEVEL% == 3 GOTO START
 	
 :EXIT
 exit
@@ -360,6 +368,27 @@ Timeout /t 5 >data/null
 echo. Re-enabling %appToEnable%
 %ch% 4F
 %adb% shell cmd package install-existing %appToEnable%
+Timeout /t 2 >data/null
+echo.-----------------------------------------------------------------------------------
+%ch% 47
+Timeout /t 1 >data/null
+echo.
+echo. && echo.
+echo. && echo.
+echo                    Press any key to back to MAIN MEMU
+%ch% 44
+pause
+%ch% 00
+GOTO START
+
+:REMOVEANYAPP
+cls
+color 47
+set /p appToRemove=Please enter app name to remove:
+Timeout /t 5 >data/null
+echo. Removing %appToRemove%
+%ch% 4F
+%adb% shell pm uninstall -k --user 0 %appToRemove%
 Timeout /t 2 >data/null
 echo.-----------------------------------------------------------------------------------
 %ch% 47
