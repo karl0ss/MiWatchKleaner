@@ -10,7 +10,7 @@ echo   _________________________________________________________________________
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 %ch% 0f
-echo			             MiWatchKleaner 1.5
+echo			             MiWatchKleaner 1.6
 %ch% 00
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -27,7 +27,7 @@ echo. && echo. && echo.
 echo   ___________________________________________________________________________________
 %ch% 0f
 echo. && echo. && echo.
-echo                            MiWatchKleaner 1.5
+echo                            MiWatchKleaner 1.6
 echo.
 echo                                    --   MENU  --
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
@@ -54,6 +54,13 @@ echo.
 %ch% 08
 %ch% 0f
 echo   _________________________________________________________________________________
+echo. && echo.
+%ch% 0a
+echo    4 - Restore Uninstall App
+echo.
+%ch% 08
+%ch% 0f
+echo   _________________________________________________________________________________
 echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo. && echo.
 echo                                                                            E - exit
 %ch% cc
@@ -67,6 +74,7 @@ echo. && choice /c:1234E /M ""
 	IF %ERRORLEVEL% == 1 GOTO CONNECT
     IF %ERRORLEVEL% == 2 GOTO REMOVEAPPS
 	IF %ERRORLEVEL% == 3 GOTO INSTALLAPPS
+	IF %ERRORLEVEL% == 4 GOTO REINSTALLAPPS
 	IF %ERRORLEVEL% == 5 GOTO EXIT
 	
 :EXIT
@@ -331,6 +339,27 @@ Timeout /t 5 >data/null
 %ch% 4F
 del /S data\apps\*.apk
 echo. ******** MoreLocale Installed & Enabled *****
+Timeout /t 2 >data/null
+echo.-----------------------------------------------------------------------------------
+%ch% 47
+Timeout /t 1 >data/null
+echo.
+echo. && echo.
+echo. && echo.
+echo                    Press any key to back to MAIN MEMU
+%ch% 44
+pause
+%ch% 00
+GOTO START
+
+:REINSTALLAPPS
+cls
+color 47
+set /p appToEnable=Please enter app name to re-enable:
+Timeout /t 5 >data/null
+echo. Re-enabling %appToEnable%
+%ch% 4F
+%adb% shell cmd package install-existing %appToEnable%
 Timeout /t 2 >data/null
 echo.-----------------------------------------------------------------------------------
 %ch% 47
