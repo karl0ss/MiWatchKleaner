@@ -24,6 +24,7 @@
     "minimist": "^1.2.5",
     "node-adb": "^0.1.6",
     "pkg": "^4.4.7",
-    "promise-android-tools": "^2.0.4"
+    "promise-android-tools": "^2.0.4",
+    "shell-exec": "^1.0.2"
   }
 }
