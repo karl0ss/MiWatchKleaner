@@ -11,5 +11,11 @@
     "url": "http://kithub.cf/Karl/MiWatchKleaner.git"
   },
   "author": "Karl Hudgell",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "download-file-with-progressbar": "^1.2.3",
+    "inquirer": "^7.1.0",
+    "node-adb": "^0.1.6",
+    "pkg": "^4.4.7"
+  }
 }
