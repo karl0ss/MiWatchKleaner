@@ -1,33 +1,30 @@
 const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
-
-const files = require('./lib/files');
+const common = require('./lib/common');
 const inquirer = require('./lib/inquirer');
+const connectWifi = require('./pages/pages')
 
-clear();
 
-console.log(
-    chalk.red(
-        figlet.textSync('MiWatch Kleaner', {
-            horizontalLayout: 'full'
-        })
-    )
-);
-console.log(chalk.red('2.0.0'));
-
-console.log(
-    chalk.red(
-        '-------------------------------------------------------------------------------------------------------'
-    )
-)
-
-const run = async () => {
+const mainMenu = async () => {
+    common.header()
+    console.log(chalk.blue('Main Menu'))
+    console.log(chalk.red('----------'))
     const mainMenuSelection = await inquirer.mainMenu();
     console.log(mainMenuSelection);
+    switch(mainMenuSelection.mainMenu) {
+        case 'connect to miwatch via wifi':
+        connectWifi.connectWifi()
+        break;
+        case 'y':
+          // code block
+          break;
+        default:
+          // code block
+      }
 };
 
-run();
+mainMenu();
 
 
 // if (files.directoryExists('.git')) {
