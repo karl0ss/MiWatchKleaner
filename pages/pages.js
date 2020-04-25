@@ -25,11 +25,11 @@ module.exports = {
         module.exports.mainMenu()
     },
     restoreApps: async () => {
-        common.header('Remove Apps')
+        common.header('Restore Apps')
         const value = await inquirer.removeAppsList();
         for (let element of value.removeAppsList) {
             await shellExec('adb shell cmd package install-existing ' + element).then(function (result) {
-                console.log('Removing ' + element + ' - ' + result.stdout);
+                console.log('Restoring ' + element + ' - ' + result.stdout);
             });
         }
         console.log(chalk.green('Restore Complete'))
