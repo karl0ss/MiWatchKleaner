@@ -7,12 +7,13 @@ const files = require('../lib/files')
 module.exports = {
     removeApps: async () => {
         common.header('Remove Apps')
-        const value = await inquirer.removeAppsList();
-        value.removeAppsList.forEach(element => {
-            shellExec('adb shell pm uninstall -k --user 0 ' + element).then(async function (result) {
+        const value = await inquirer.removeAppsList();      
+        value.removeAppsList.forEach(async (element) => {
+           await shellExec('adb shell pm uninstall -k --user 0 ' + element).then(async function (result) {
                 console.log('Removing ' + element + ' - ' + result.stdout)
             }).catch()
         });
+        console.log('complete')
     },
     restoreApps: async () => {
         common.header('Restore Apps')
