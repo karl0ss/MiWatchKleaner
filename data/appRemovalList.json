@@ -1,0 +1,31 @@
+{
+  "apps": [
+    "com.xiaomi.wear.calculator",
+    "com.ximalayaos.wear.common",
+    "com.eg.android.AlipayGphone",
+    "com.xiaomi.wear.hotwordle",
+    "com.xiaomi.wear.fitness",
+    "com.xiaomi.wear.watchface.function",
+    "com.xiaomi.wear.watchface.art",
+    "com.xiaomi.wear.watchface.album",
+    "com.xiaomi.wear.watchface.decomposite",
+    "com.xiaomi.wear.watchface.classic",
+    "com.xiaomi.wear.tutorial",
+    "com.xiaomi.wear.deskclock",
+    "com.xiaomi.wear.sportlogger",
+    "com.xiaomi.wear.weather",
+    "com.xiaomi.wear.charging",
+    "com.xiaomi.wear.anonymous.xiaoai",
+    "com.xiaomi.wear.lpa",
+    "com.xiaomi.wear.setupprovider",
+    "com.xiaomi.wear.xiaoai",
+    "com.xiaomi.wear.card",
+    "com.google.android.inputmethod.pinyin",
+    "com.sogou.ime.wear",
+    "com.tencent.qqmusicwatch",
+    "com.sogou.map.android.maps",
+    "com.umetrip.android.msky.app",
+    "com.gotokeep.keep",
+    "com.tigerbrokers.stock"
+  ]
+}
