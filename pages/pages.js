@@ -3,6 +3,7 @@ const common = require('../lib/common');
 const inquirer = require('../lib/inquirer');
 const shellExec = require('shell-exec')
 const files = require('../lib/files')
+const fs = require('fs')
 
 module.exports = {
     removeApps: async () => {
@@ -30,29 +31,40 @@ module.exports = {
         module.exports.mainMenu()
     },
     connectWifi: async () => {
+        const miwatchData = JSON.parse(fs.readFileSync('./data/MiWatch.json', 'utf8'));
         common.header('Connect Wifi')
-        const value = await inquirer.connectWifi();
-        const miWatchIpaddress = value.connectWifi
-        shellExec('adb connect ' + miWatchIpaddress).then(async function (result) {
-            if (result.stdout.includes('unable to connect')) {
-                console.log(chalk.red('MiWatch not found'))
-                await common.pause(2000)
-                console.log(chalk.white('Try Again'))
-                await common.pause(1000)
-                module.exports.connectWifi()
-            } else if (result.stdout.includes('cannot connect')) {
-                console.log(chalk.red('MiWatch not found'))
-                await common.pause(2000)
-                console.log(chalk.white('Try Again'))
-                await common.pause(1000)
-                module.exports.connectWifi()
-            } else {
-                console.log(chalk.green('MiWatch Connected'))
-                files.writeIpAddress(miWatchIpaddress)
-                await common.pause(3000)
-                module.exports.mainMenu()
-            }
-        }).catch()
+        if (miwatchData.ipAddress !== "") {
+            console.log('pooooooo')
+        } else {
+            const value = await inquirer.connectWifi();
+            const miWatchIpaddress = value.connectWifi
+            shellExec('adb connect ' + miWatchIpaddress).then(async function (result) {
+                if (result.stdout.includes('unable to connect')) {
+                    console.log(chalk.red('MiWatch not found'))
+                    await common.pause(2000)
+                    console.log(chalk.white('Try Again'))
+                    await common.pause(1000)
+                    module.exports.connectWifi()
+                } else if (result.stdout.includes('cannot connect')) {
+                    console.log(chalk.red('MiWatch not found'))
+                    await common.pause(2000)
+                    console.log(chalk.white('Try Again'))
+                    await common.pause(1000)
+                    module.exports.connectWifi()
+                } else if (result.stdout.includes('cannot resolve host')) {
+                    console.log(chalk.red('MiWatch not found'))
+                    await common.pause(2000)
+                    console.log(chalk.white('Try Again'))
+                    await common.pause(1000)
+                    module.exports.connectWifi()
+                } else {
+                    console.log(chalk.green('MiWatch Connected'))
+                    files.writeIpAddress(miWatchIpaddress)
+                    await common.pause(3000)
+                    module.exports.mainMenu()
+                }
+            }).catch()
+        }
     },
     mainMenu: async () => {
         common.header('Main Menu')
@@ -66,6 +78,8 @@ module.exports = {
                 break;
             case 'restore xiaomi apps':
                 module.exports.restoreApps()
+                break;
+            case 'quit':
                 break;
             default:
                 // code block
