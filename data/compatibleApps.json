@@ -34,5 +34,21 @@
   {
     "name": "Google Services",
     "url": "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Google/GoogleServices.apk"
+  },
+  {
+    "name": "Pujie Black",
+    "url": "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/Pujie.apk"
+  },
+  {
+    "name": "AccuWeather",
+    "url": "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/AccuWeather.apk"
+  },
+  {
+    "name": "Ultimate Alexa",
+    "url": "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/UltimateAlexa.apk"
+  },
+  {
+    "name": "MoreLocale",
+    "url": "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/MoreLocale.apk"
   }
 ]
