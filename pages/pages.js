@@ -34,7 +34,35 @@ module.exports = {
         const miwatchData = JSON.parse(fs.readFileSync('./data/MiWatch.json', 'utf8'));
         common.header('Connect Wifi')
         if (miwatchData.ipAddress !== "") {
-            console.log('pooooooo')
+            console.log('Trying to connect with stored ipAddress')
+            shellExec('adb connect ' + miwatchData.ipAddress).then(async function (result) {
+                if (result.stdout.includes('unable to connect')) {
+                    console.log(chalk.red('MiWatch not found'))
+                    await common.pause(2000)
+                    console.log(chalk.white('Try Again'))
+                    files.writeIpAddress('')
+                    await common.pause(1000)
+                    module.exports.connectWifi()
+                } else if (result.stdout.includes('cannot connect')) {
+                    console.log(chalk.red('MiWatch not found'))
+                    await common.pause(2000)
+                    console.log(chalk.white('Try Again'))
+                    files.writeIpAddress('')
+                    await common.pause(1000)
+                    module.exports.connectWifi()
+                } else if (result.stdout.includes('cannot resolve host')) {
+                    console.log(chalk.red('MiWatch not found'))
+                    await common.pause(2000)
+                    console.log(chalk.white('Try Again'))
+                    files.writeIpAddress('')
+                    await common.pause(1000)
+                    module.exports.connectWifi()
+                } else {
+                    console.log(chalk.green('MiWatch Connected'))
+                    await common.pause(3000)
+                    module.exports.mainMenu()
+                }
+            }).catch()
         } else {
             const value = await inquirer.connectWifi();
             const miWatchIpaddress = value.connectWifi
