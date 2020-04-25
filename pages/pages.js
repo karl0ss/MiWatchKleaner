@@ -2,6 +2,7 @@ const chalk = require('chalk');
 const common = require('../lib/common');
 const inquirer = require('../lib/inquirer');
 const shellExec = require('shell-exec')
+const files = require('../lib/files')
 
 
 module.exports = {
@@ -24,7 +25,7 @@ module.exports = {
                 module.exports.connectWifi()
             } else {
                 console.log(chalk.green('MiWatch Connected'))
-                common.writeIpAddress(miWatchIpaddress)
+                files.writeIpAddress(miWatchIpaddress)
                 await common.pause(3000)
                 module.exports.mainMenu()
             }
