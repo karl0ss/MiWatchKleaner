@@ -5,6 +5,11 @@ const shellExec = require('shell-exec')
 const files = require('../lib/files')
 const fs = require('fs')
 const adb = require('../lib/adb')
+const {
+    DownloaderHelper
+} = require('node-downloader-helper');
+
+
 module.exports = {
     compatibleApps: async () => {
         common.header('Install Compatible Apps')
@@ -14,12 +19,15 @@ module.exports = {
         for (let element of value.removeAppsList) {
             for (let element2 of compatibleApps) {
                 if (element === element2.name) {
-                    files.downloadFile(element2)
+                    const options = {
+                        override: true,
+                    }
+                    const dl = new DownloaderHelper(element2.url, './data/apps/', options);
+                    dl.on('end', () => console.log('Downloading Latest ' + element2.name + ' Complete'))
+                    await dl.start();
                 }
             }
-            // console.log(element)
         }
-        // await adb.installApk()
         console.log('finished')
     },
     removeApps: async () => {
