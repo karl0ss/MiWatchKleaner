@@ -6,6 +6,12 @@ const files = require('../lib/files')
 const fs = require('fs')
 
 module.exports = {
+    compatibleApps: async () => {
+        common.header('Install Compatible Apps')
+        const compatibleApps = JSON.parse(fs.readFileSync('./data/compatibleApps.json', 'utf8'));
+        const value = await inquirer.compatibleApps();
+        console.log(value)
+    },
     removeApps: async () => {
         common.header('Remove Apps')
         const value = await inquirer.removeAppsList();
@@ -106,6 +112,9 @@ module.exports = {
                 break;
             case 'restore xiaomi apps':
                 module.exports.restoreApps()
+                break;
+            case 'install compatible apps':
+                module.exports.compatibleApps()
                 break;
             case 'quit':
                 break;
