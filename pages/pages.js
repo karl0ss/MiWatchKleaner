@@ -4,19 +4,23 @@ const inquirer = require('../lib/inquirer');
 const shellExec = require('shell-exec')
 const files = require('../lib/files')
 const fs = require('fs')
-
+const adb = require('../lib/adb')
 module.exports = {
     compatibleApps: async () => {
         common.header('Install Compatible Apps')
         const compatibleApps = JSON.parse(fs.readFileSync('./data/compatibleApps.json', 'utf8'));
         const value = await inquirer.compatibleApps();
+
         for (let element of value.removeAppsList) {
             for (let element2 of compatibleApps) {
                 if (element === element2.name) {
-                   await files.downloadFile(element2)
+                    files.downloadFile(element2)
                 }
             }
+            // console.log(element)
         }
+        // await adb.installApk()
+        console.log('finished')
     },
     removeApps: async () => {
         common.header('Remove Apps')
