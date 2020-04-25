@@ -55,10 +55,10 @@ module.exports = {
             case 'connect to miwatch via wifi':
                 module.exports.connectWifi()
                 break;
-            case 'remove install xiaomi apps':
+            case 'remove xiaomi apps':
                 module.exports.removeApps()
                 break;
-            case 'restore uninstalled apps':
+            case 'restore xiaomi apps':
                 module.exports.restoreApps()
                 break;
             default:
