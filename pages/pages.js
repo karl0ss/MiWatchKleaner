@@ -7,22 +7,27 @@ const files = require('../lib/files')
 module.exports = {
     removeApps: async () => {
         common.header('Remove Apps')
-        const value = await inquirer.removeAppsList();      
-        value.removeAppsList.forEach(async (element) => {
-           await shellExec('adb shell pm uninstall -k --user 0 ' + element).then(async function (result) {
-                console.log('Removing ' + element + ' - ' + result.stdout)
-            }).catch()
-        });
-        console.log('complete')
+        const value = await inquirer.removeAppsList();
+        for (let element of value.removeAppsList) {
+            await shellExec('adb shell pm uninstall -k --user 0 ' + element).then(function (result) {
+                console.log('Removing ' + element + ' - ' + result.stdout);
+            });
+        }
+        console.log(chalk.green('Removal Complete'))
+        await common.pause(2000)
+        module.exports.mainMenu()
     },
     restoreApps: async () => {
-        common.header('Restore Apps')
+        common.header('Remove Apps')
         const value = await inquirer.removeAppsList();
-        value.removeAppsList.forEach(element => {
-            shellExec('adb shell cmd package install-existing ' + element).then(async function (result) {
-                console.log('Installing ' + element + ' - ' + result.stdout)
-            }).catch()
-        });
+        for (let element of value.removeAppsList) {
+            await shellExec('adb shell cmd package install-existing ' + element).then(function (result) {
+                console.log('Removing ' + element + ' - ' + result.stdout);
+            });
+        }
+        console.log(chalk.green('Restore Complete'))
+        await common.pause(2000)
+        module.exports.mainMenu()
     },
     connectWifi: async () => {
         common.header('Connect Wifi')
