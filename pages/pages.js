@@ -11,11 +11,11 @@ module.exports = {
         const compatibleApps = JSON.parse(fs.readFileSync('./data/compatibleApps.json', 'utf8'));
         const value = await inquirer.compatibleApps();
         for (let element of value.removeAppsList) {
-           for (let element2 of compatibleApps) {
-               if (element === element2.name) {
-                   console.log(element2.url)
-               }
-           }
+            for (let element2 of compatibleApps) {
+                if (element === element2.name) {
+                   await files.downloadFile(element2)
+                }
+            }
         }
     },
     removeApps: async () => {
