@@ -10,7 +10,13 @@ module.exports = {
         common.header('Install Compatible Apps')
         const compatibleApps = JSON.parse(fs.readFileSync('./data/compatibleApps.json', 'utf8'));
         const value = await inquirer.compatibleApps();
-        console.log(value)
+        for (let element of value.removeAppsList) {
+           for (let element2 of compatibleApps) {
+               if (element === element2.name) {
+                   console.log(element2.url)
+               }
+           }
+        }
     },
     removeApps: async () => {
         common.header('Remove Apps')
