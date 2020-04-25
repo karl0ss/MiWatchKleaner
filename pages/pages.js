@@ -6,6 +6,11 @@ const files = require('../lib/files')
 
 
 module.exports = {
+    removeApps: async () => {
+        common.header('Remove Apps')
+        const value = await inquirer.removeAppsList();
+        console.log(value)
+    },
     connectWifi: async () => {
         common.header('Connect Wifi')
         const value = await inquirer.connectWifi();
@@ -38,8 +43,8 @@ module.exports = {
             case 'connect to miwatch via wifi':
                 module.exports.connectWifi()
                 break;
-            case 'y':
-                // code block
+            case 'remove install xiaomi apps':
+                module.exports.removeApps()
                 break;
             default:
                 // code block
