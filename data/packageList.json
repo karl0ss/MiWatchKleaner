@@ -26,6 +26,9 @@
     "com.sogou.map.android.maps",
     "com.umetrip.android.msky.app",
     "com.gotokeep.keep",
-    "com.tigerbrokers.stock"
+    "com.tigerbrokers.stock",
+    "com.xiaomi.wear.market",
+    "com.xiaomi.mihome",
+    "com.xiaomi.account"
   ]
 }
