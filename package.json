@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "MiWatch Cleaning Tool",
   "main": "app.js",
+  "bin": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,13 +25,12 @@
     "node-downloader-helper": "^1.0.12",
     "pkg": "^4.4.7",
     "request-promise-native": "^1.0.8",
-    "shell-exec": "^1.0.2"
+    "shell-exec": "^1.0.2",
+    "shelljs": "^0.8.4"
   },
   "pkg": {
-    "scripts": [
-    ],
+    "scripts": [],
     "assets": [
-      "node_modules/figlet/**/*.*",
       "node_modules/figlet/fonts/Standard.flf"
     ]
   }
