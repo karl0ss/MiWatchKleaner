@@ -6,7 +6,7 @@
   "bin": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buildRelease": "pkg package.json && mv miwatchkleaner2-* ./release && mv ./release/miwatchkleaner2-win.exe ./release/Windows && mv ./release/miwatchkleaner2-linux ./release/Linux && mv ./release/miwatchkleaner2-macos ./release/MacOs && chmod 0777 ./release/**/adb && chmod 0777 ./release/**/miwatchkleaner2-*"
+    "buildRelease": "pkg package.json && mv miwatchkleaner2-* ./release && mv ./release/miwatchkleaner2-win-* ./release/Windows && mv ./release/miwatchkleaner2-linux-* ./release/Linux && mv ./release/miwatchkleaner2-macos-* ./release/MacOs && chmod 0777 ./release/**/adb && chmod 0777 ./release/**/miwatchkleaner2-*"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,11 @@
     "scripts": [],
     "assets": [
       "node_modules/figlet/fonts/Standard.flf"
+    ],
+    "targets": [
+      "node12-linux-x86",
+      "node12-macos-x64",
+      "node12-win-x86"
     ]
   }
 }
