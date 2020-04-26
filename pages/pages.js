@@ -4,17 +4,20 @@ const inquirer = require('../lib/inquirer');
 const shellExec = require('shell-exec')
 const files = require('../lib/files')
 const fs = require('fs')
-const adb = require('../lib/adb')
 const {
     DownloaderHelper
 } = require('node-downloader-helper');
-
+const getFilesIn = require('get-files-in')
 
 module.exports = {
     compatibleApps: async () => {
         common.header('Install Compatible Apps')
         const compatibleApps = JSON.parse(fs.readFileSync('./data/compatibleApps.json', 'utf8'));
         const value = await inquirer.compatibleApps();
+
+        await shellExec('rm ./data/apps/*.apk').then(function (result) {
+            // console.log('Installing ' + element + ' - ' + result.stdout);
+        });
 
         for (let element of value.removeAppsList) {
             for (let element2 of compatibleApps) {
@@ -28,7 +31,17 @@ module.exports = {
                 }
             }
         }
-        console.log('finished')
+
+        const apkList = await getFilesIn('./data/apps', matchFiletypes = ['apk'], checkSubDirectories = false)
+
+        for (let element of apkList) {
+            await shellExec('adb install -r ' + element).then(function (result) {
+                console.log('Installing ' + element + ' - ' + result.stdout);
+            });
+        }
+        console.log(chalk.green('Compatible Apps Installed'))
+        await common.pause(2000)
+        module.exports.mainMenu()
     },
     removeApps: async () => {
         common.header('Remove Apps')
