@@ -8,16 +8,36 @@ const {
     DownloaderHelper
 } = require('node-downloader-helper');
 const getFilesIn = require('get-files-in')
+const http = require('http')
 
 module.exports = {
     compatibleApps: async () => {
         common.header('Install Compatible Apps')
-        const compatibleApps = JSON.parse(fs.readFileSync('./data/compatibleApps.json', 'utf8'));
+        let compatibleApps
+        let url = "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/compatibleApps.json";
+        http.get(url, (res) => {
+            let body = "";
+
+            res.on("data", (chunk) => {
+                body += chunk;
+            });
+
+            res.on("end", () => {
+                try {
+                    compatibleApps = JSON.parse(body);
+                    // do something with JSON
+                } catch (error) {
+                    console.error(error.message);
+                };
+            });
+
+        }).on("error", (error) => {
+            console.error(error.message);
+        });
+
         const value = await inquirer.compatibleApps();
 
-        await shellExec('rm ./data/apps/*.apk').then(function (result) {
-            // console.log('Installing ' + element + ' - ' + result.stdout);
-        });
+        await shellExec('rm ./data/apps/*.apk').then(function (result) {});
 
         for (let element of value.removeAppsList) {
             for (let element2 of compatibleApps) {
@@ -35,8 +55,9 @@ module.exports = {
         const apkList = await getFilesIn('./data/apps', matchFiletypes = ['apk'], checkSubDirectories = false)
 
         for (let element of apkList) {
+            console.log('Installing ' + element)
             await shellExec('adb install -r ' + element).then(function (result) {
-                console.log('Installing ' + element + ' - ' + result.stdout);
+                console.log(element + ' - ' + result.stdout);
             });
         }
         console.log(chalk.green('Compatible Apps Installed'))
