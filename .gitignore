@@ -1,1 +1,3 @@
-data/apps/
+node_modules/
+data/MiWatch.json
+data/apps/*.apk
