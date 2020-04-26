@@ -9,6 +9,8 @@ const {
 } = require('node-downloader-helper');
 const getFilesIn = require('get-files-in')
 const http = require('http')
+var shell = require('shelljs');
+
 
 module.exports = {
     compatibleApps: async () => {
@@ -37,7 +39,7 @@ module.exports = {
 
         const value = await inquirer.compatibleApps();
 
-        await shellExec('rm ./data/apps/*.apk').then(function (result) {});
+        await shell.rm('-rf', './data/apps/*.apk');
 
         for (let element of value.removeAppsList) {
             for (let element2 of compatibleApps) {
