@@ -25,5 +25,13 @@
     "pkg": "^4.4.7",
     "request-promise-native": "^1.0.8",
     "shell-exec": "^1.0.2"
+  },
+  "pkg": {
+    "scripts": [
+    ],
+    "assets": [
+      "node_modules/figlet/**/*.*",
+      "node_modules/figlet/fonts/Standard.flf"
+    ]
   }
 }
