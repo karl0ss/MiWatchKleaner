@@ -39,9 +39,7 @@ module.exports = {
 
         const value = await inquirer.compatibleApps();
 
-        const apkList = await getFilesIn('./data/apps', matchFiletypes = ['apk'], checkSubDirectories = false)
-
-        for (let element of apkList) {
+        for (let element of value.removeAppsList) {
             console.log('Installing ' + element)
             if (process.platform === 'win32' || process.platform === 'win64') {
                 await shellExec('adb install -r ' + element).then(async function (result) {
