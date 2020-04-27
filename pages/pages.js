@@ -13,6 +13,60 @@ var shell = require('shelljs');
 
 
 module.exports = {
+    removeCompatibleApps: async () => {
+        common.header('Remove Compatible Apps')
+        let compatibleApps
+        let url = "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/compatibleApps.json";
+        http.get(url, (res) => {
+            let body = "";
+
+            res.on("data", (chunk) => {
+                body += chunk;
+            });
+
+            res.on("end", () => {
+                try {
+                    compatibleApps = JSON.parse(body);
+                    // do something with JSON
+                } catch (error) {
+                    console.error(error.message);
+                };
+            });
+
+        }).on("error", (error) => {
+            console.error(error.message);
+        });
+
+        const value = await inquirer.compatibleApps();
+
+        const apkList = await getFilesIn('./data/apps', matchFiletypes = ['apk'], checkSubDirectories = false)
+
+        for (let element of apkList) {
+            console.log('Installing ' + element)
+            if (process.platform === 'win32' || process.platform === 'win64') {
+                await shellExec('adb install -r ' + element).then(async function (result) {
+                    console.log(element + ' - ' + result.stdout);
+                    if (element === "data\\apps\\MoreLocale.apk") {
+                        await shellExec('adb shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
+                            console.log('moreLocale Activated On Watch');
+                        });
+                    }
+                });
+            } else {
+                await shellExec('./adb install -r ' + element).then(async function (result) {
+                    console.log(element + ' - ' + result.stdout);
+                    if (element === "data\\apps\\MoreLocale.apk") {
+                        await shellExec('./adb shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
+                            console.log('moreLocale Activated On Watch');
+                        });
+                    }
+                });
+            }
+        }
+        console.log(chalk.green('Compatible Apps Installed'))
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
     compatibleApps: async () => {
         common.header('Install Compatible Apps')
         let compatibleApps
@@ -205,6 +259,9 @@ module.exports = {
             case 'install compatible apps':
                 module.exports.compatibleApps()
                 break;
+            case 'remove compatible apps' :
+                module.exports.removeCompatibleApps()
+                break;    
             case 'quit':
                 break;
             default:
