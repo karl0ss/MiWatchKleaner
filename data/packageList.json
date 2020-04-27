@@ -29,6 +29,10 @@
     "com.tigerbrokers.stock",
     "com.xiaomi.wear.market",
     "com.xiaomi.mihome",
-    "com.xiaomi.account"
+    "com.xiaomi.account",
+    "com.google.android.clockwork.gestures.tutorial",
+    "com.xiaomi.wear.compass",
+    "com.xiaomi.wear.mqs",
+    "com.xiaomi.wear.pressure"
   ]
 }
