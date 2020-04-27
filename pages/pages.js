@@ -115,60 +115,31 @@ module.exports = {
             console.log('Trying to connect with stored ipAddress')
             if (process.platform === 'win32' || process.platform === 'win64') {
                 shellExec('adb connect ' + miwatchData.ipAddress).then(async function (result) {
-                    if (result.stdout.includes('unable to connect')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        files.writeIpAddress('')
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else if (result.stdout.includes('cannot connect')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        files.writeIpAddress('')
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else if (result.stdout.includes('cannot resolve host')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        files.writeIpAddress('')
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else {
+                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
                         console.log(chalk.green('MiWatch Connected'))
                         await common.pause(3000)
                         module.exports.mainMenu()
+                    } else {
+                        console.log(chalk.red('MiWatch not found'))
+                        await common.pause(2000)
+                        console.log(chalk.white('Try Again'))
+                        await common.pause(1000)
+                        module.exports.connectWifi()
                     }
                 }).catch()
             } else {
                 shellExec('./adb connect ' + miwatchData.ipAddress).then(async function (result) {
-                    if (result.stdout.includes('unable to connect')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        files.writeIpAddress('')
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else if (result.stdout.includes('cannot connect')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        files.writeIpAddress('')
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else if (result.stdout.includes('cannot resolve host')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        files.writeIpAddress('')
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else {
+                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
                         console.log(chalk.green('MiWatch Connected'))
+                        files.writeIpAddress(miWatchIpaddress)
                         await common.pause(3000)
                         module.exports.mainMenu()
+                    } else {
+                        console.log(chalk.red('MiWatch not found'))
+                        await common.pause(2000)
+                        console.log(chalk.white('Try Again'))
+                        await common.pause(1000)
+                        module.exports.connectWifi()
                     }
                 }).catch()
             }
@@ -177,56 +148,32 @@ module.exports = {
             const miWatchIpaddress = value.connectWifi
             if (process.platform === 'win32' || process.platform === 'win64') {
                 shellExec('adb connect ' + miWatchIpaddress).then(async function (result) {
-                    if (result.stdout.includes('unable to connect')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else if (result.stdout.includes('cannot connect')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else if (result.stdout.includes('cannot resolve host')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else {
+                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
                         console.log(chalk.green('MiWatch Connected'))
                         files.writeIpAddress(miWatchIpaddress)
                         await common.pause(3000)
                         module.exports.mainMenu()
+                    } else {
+                        console.log(chalk.red('MiWatch not found'))
+                        await common.pause(2000)
+                        console.log(chalk.white('Try Again'))
+                        await common.pause(1000)
+                        module.exports.connectWifi()
                     }
                 }).catch()
             } else {
                 shellExec('./adb connect ' + miWatchIpaddress).then(async function (result) {
-                    if (result.stdout.includes('unable to connect')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else if (result.stdout.includes('cannot connect')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else if (result.stdout.includes('cannot resolve host')) {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    } else {
+                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
                         console.log(chalk.green('MiWatch Connected'))
                         files.writeIpAddress(miWatchIpaddress)
                         await common.pause(3000)
                         module.exports.mainMenu()
+                    } else {
+                        console.log(chalk.red('MiWatch not found'))
+                        await common.pause(2000)
+                        console.log(chalk.white('Try Again'))
+                        await common.pause(1000)
+                        module.exports.connectWifi()
                     }
                 }).catch()
             }
