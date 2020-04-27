@@ -68,7 +68,7 @@ module.exports = {
                     }
                 });
             } else {
-                await shellExec('./adb install -r ' + element).then(function (result) {
+                await shellExec('./adb install -r ' + element).then(async function (result) {
                     console.log(element + ' - ' + result.stdout);
                     if (element === "data\\apps\\MoreLocale.apk") {
                         await shellExec('./adb shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
@@ -76,14 +76,13 @@ module.exports = {
                         });
                     }
                 });
-            });
-    }
-}
-console.log(chalk.green('Compatible Apps Installed'))
-await common.pause(2000)
-module.exports.mainMenu()
-},
-removeApps: async () => {
+            }
+        }
+        console.log(chalk.green('Compatible Apps Installed'))
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
+    removeApps: async () => {
         common.header('Remove Apps')
         const value = await inquirer.removeAppsList();
         for (let element of value.removeAppsList) {
@@ -102,114 +101,114 @@ removeApps: async () => {
         module.exports.mainMenu()
     },
     restoreApps: async () => {
-            common.header('Restore Apps')
-            const value = await inquirer.removeAppsList();
-            for (let element of value.removeAppsList) {
-                if (process.platform === 'win32' || process.platform === 'win64') {
-                    await shellExec('adb shell cmd package install-existing ' + element).then(function (result) {
-                        console.log('Restoring ' + element + ' - ' + result.stdout);
-                    });
-                } else {
-                    await shellExec('./adb shell cmd package install-existing ' + element).then(function (result) {
-                        console.log('Restoring ' + element + ' - ' + result.stdout);
-                    });
-                }
+        common.header('Restore Apps')
+        const value = await inquirer.removeAppsList();
+        for (let element of value.removeAppsList) {
+            if (process.platform === 'win32' || process.platform === 'win64') {
+                await shellExec('adb shell cmd package install-existing ' + element).then(function (result) {
+                    console.log('Restoring ' + element + ' - ' + result.stdout);
+                });
+            } else {
+                await shellExec('./adb shell cmd package install-existing ' + element).then(function (result) {
+                    console.log('Restoring ' + element + ' - ' + result.stdout);
+                });
             }
-            console.log(chalk.green('Restore Complete'))
-            await common.pause(2000)
-            module.exports.mainMenu()
-        },
-        connectWifi: async () => {
-                const miwatchData = JSON.parse(fs.readFileSync('./data/MiWatch.json', 'utf8'));
-                common.header('Connect Wifi')
-                if (miwatchData.ipAddress !== "") {
-                    console.log('Trying to connect with stored ipAddress')
-                    if (process.platform === 'win32' || process.platform === 'win64') {
-                        shellExec('adb connect ' + miwatchData.ipAddress).then(async function (result) {
-                            if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                                console.log(chalk.green('MiWatch Connected'))
-                                await common.pause(3000)
-                                module.exports.mainMenu()
-                            } else {
-                                console.log(chalk.red('MiWatch not found'))
-                                await common.pause(2000)
-                                console.log(chalk.white('Try Again'))
-                                await common.pause(1000)
-                                module.exports.connectWifi()
-                            }
-                        }).catch()
+        }
+        console.log(chalk.green('Restore Complete'))
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
+    connectWifi: async () => {
+        const miwatchData = JSON.parse(fs.readFileSync('./data/MiWatch.json', 'utf8'));
+        common.header('Connect Wifi')
+        if (miwatchData.ipAddress !== "") {
+            console.log('Trying to connect with stored ipAddress')
+            if (process.platform === 'win32' || process.platform === 'win64') {
+                shellExec('adb connect ' + miwatchData.ipAddress).then(async function (result) {
+                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
+                        console.log(chalk.green('MiWatch Connected'))
+                        await common.pause(3000)
+                        module.exports.mainMenu()
                     } else {
-                        shellExec('./adb connect ' + miwatchData.ipAddress).then(async function (result) {
-                            if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                                console.log(chalk.green('MiWatch Connected'))
-                                files.writeIpAddress(miWatchIpaddress)
-                                await common.pause(3000)
-                                module.exports.mainMenu()
-                            } else {
-                                console.log(chalk.red('MiWatch not found'))
-                                await common.pause(2000)
-                                console.log(chalk.white('Try Again'))
-                                await common.pause(1000)
-                                module.exports.connectWifi()
-                            }
-                        }).catch()
-                    }
-                } else {
-                    const value = await inquirer.connectWifi();
-                    const miWatchIpaddress = value.connectWifi
-                    if (process.platform === 'win32' || process.platform === 'win64') {
-                        shellExec('adb connect ' + miWatchIpaddress).then(async function (result) {
-                            if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                                console.log(chalk.green('MiWatch Connected'))
-                                files.writeIpAddress(miWatchIpaddress)
-                                await common.pause(3000)
-                                module.exports.mainMenu()
-                            } else {
-                                console.log(chalk.red('MiWatch not found'))
-                                await common.pause(2000)
-                                console.log(chalk.white('Try Again'))
-                                await common.pause(1000)
-                                module.exports.connectWifi()
-                            }
-                        }).catch()
-                    } else {
-                        shellExec('./adb connect ' + miWatchIpaddress).then(async function (result) {
-                            if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                                console.log(chalk.green('MiWatch Connected'))
-                                files.writeIpAddress(miWatchIpaddress)
-                                await common.pause(3000)
-                                module.exports.mainMenu()
-                            } else {
-                                console.log(chalk.red('MiWatch not found'))
-                                await common.pause(2000)
-                                console.log(chalk.white('Try Again'))
-                                await common.pause(1000)
-                                module.exports.connectWifi()
-                            }
-                        }).catch()
-                    }
-                }
-            },
-            mainMenu: async () => {
-                common.header('Main Menu')
-                const mainMenuSelection = await inquirer.mainMenu();
-                switch (mainMenuSelection.mainMenu) {
-                    case 'connect to miwatch via wifi':
+                        console.log(chalk.red('MiWatch not found'))
+                        await common.pause(2000)
+                        console.log(chalk.white('Try Again'))
+                        await common.pause(1000)
                         module.exports.connectWifi()
-                        break;
-                    case 'remove xiaomi apps':
-                        module.exports.removeApps()
-                        break;
-                    case 'restore xiaomi apps':
-                        module.exports.restoreApps()
-                        break;
-                    case 'install compatible apps':
-                        module.exports.compatibleApps()
-                        break;
-                    case 'quit':
-                        break;
-                    default:
-                        // code block
-                }
+                    }
+                }).catch()
+            } else {
+                shellExec('./adb connect ' + miwatchData.ipAddress).then(async function (result) {
+                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
+                        console.log(chalk.green('MiWatch Connected'))
+                        files.writeIpAddress(miWatchIpaddress)
+                        await common.pause(3000)
+                        module.exports.mainMenu()
+                    } else {
+                        console.log(chalk.red('MiWatch not found'))
+                        await common.pause(2000)
+                        console.log(chalk.white('Try Again'))
+                        await common.pause(1000)
+                        module.exports.connectWifi()
+                    }
+                }).catch()
             }
+        } else {
+            const value = await inquirer.connectWifi();
+            const miWatchIpaddress = value.connectWifi
+            if (process.platform === 'win32' || process.platform === 'win64') {
+                shellExec('adb connect ' + miWatchIpaddress).then(async function (result) {
+                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
+                        console.log(chalk.green('MiWatch Connected'))
+                        files.writeIpAddress(miWatchIpaddress)
+                        await common.pause(3000)
+                        module.exports.mainMenu()
+                    } else {
+                        console.log(chalk.red('MiWatch not found'))
+                        await common.pause(2000)
+                        console.log(chalk.white('Try Again'))
+                        await common.pause(1000)
+                        module.exports.connectWifi()
+                    }
+                }).catch()
+            } else {
+                shellExec('./adb connect ' + miWatchIpaddress).then(async function (result) {
+                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
+                        console.log(chalk.green('MiWatch Connected'))
+                        files.writeIpAddress(miWatchIpaddress)
+                        await common.pause(3000)
+                        module.exports.mainMenu()
+                    } else {
+                        console.log(chalk.red('MiWatch not found'))
+                        await common.pause(2000)
+                        console.log(chalk.white('Try Again'))
+                        await common.pause(1000)
+                        module.exports.connectWifi()
+                    }
+                }).catch()
+            }
+        }
+    },
+    mainMenu: async () => {
+        common.header('Main Menu')
+        const mainMenuSelection = await inquirer.mainMenu();
+        switch (mainMenuSelection.mainMenu) {
+            case 'connect to miwatch via wifi':
+                module.exports.connectWifi()
+                break;
+            case 'remove xiaomi apps':
+                module.exports.removeApps()
+                break;
+            case 'restore xiaomi apps':
+                module.exports.restoreApps()
+                break;
+            case 'install compatible apps':
+                module.exports.compatibleApps()
+                break;
+            case 'quit':
+                break;
+            default:
+                // code block
+        }
+    }
 };
