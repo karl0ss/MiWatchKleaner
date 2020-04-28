@@ -16,4 +16,4 @@ cd Linux/ && \
 tar -pcvzf miwatchkleaner.$buildNum-Linux.tar.gz adb data/ miwatchkleaner2-linux-x64 && \
 cd .. && \
 cd Windows/ && \
-zip -r miwatchkleaner.$buildNum-win.zip adb AdbWinApi.dll AdbWinUsbApi.dll data/ miwatchkleaner2-win-x86.exe
+zip -r miwatchkleaner.$buildNum-win.zip adb.exe AdbWinApi.dll AdbWinUsbApi.dll data/ miwatchkleaner2-win-x86.exe
