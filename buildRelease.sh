@@ -7,6 +7,8 @@ mv ./release/miwatchkleaner2-linux-* ./release/Linux && \
 mv ./release/miwatchkleaner2-macos-* ./release/MacOs && \
 chmod 0777 ./release/**/adb && \
 chmod 0777 ./release/**/miwatchkleaner2-* && \
+chmod +x ./release/**/adb && \
+chmod +x ./release/**/miwatchkleaner2-* && \
 cd release/MacOS/ && \
 tar -pcvzf miwatchkleaner.$buildNum-macos.tar.gz adb data/ miwatchkleaner2-macos-x64 && \
 cd .. && \
