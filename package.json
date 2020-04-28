@@ -6,7 +6,7 @@
   "bin": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buildRelease": "pkg package.json && mv miwatchkleaner2-* ./release && mv ./release/miwatchkleaner2-win-* ./release/Windows && mv ./release/miwatchkleaner2-linux-* ./release/Linux && mv ./release/miwatchkleaner2-macos-* ./release/MacOs && chmod 0777 ./release/**/adb && chmod 0777 ./release/**/miwatchkleaner2-*"
+    "buildRelease": "sh ./buildRelease.sh"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,8 @@
     "pkg": "^4.4.7",
     "request-promise-native": "^1.0.8",
     "shell-exec": "^1.0.2",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.4",
+    "zip": "^1.2.0"
   },
   "pkg": {
     "scripts": [],
