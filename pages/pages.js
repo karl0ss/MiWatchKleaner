@@ -11,6 +11,7 @@ const getFilesIn = require('get-files-in')
 const http = require('http')
 var shell = require('shelljs');
 
+let adbRun
 
 module.exports = {
     removeCompatibleApps: async () => {
@@ -36,30 +37,17 @@ module.exports = {
         }).on("error", (error) => {
             console.error(error.message);
         });
-
         const value = await inquirer.compatibleApps();
-
         for (let element of value.removeAppsList) {
             console.log('Installing ' + element)
-            if (process.platform === 'win32' || process.platform === 'win64') {
-                await shellExec('adb install -r ' + element).then(async function (result) {
-                    console.log(element + ' - ' + result.stdout);
-                    if (element === "data\\apps\\MoreLocale.apk") {
-                        await shellExec('adb shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                            console.log('moreLocale Activated On Watch');
-                        });
-                    }
-                });
-            } else {
-                await shellExec('./adb install -r ' + element).then(async function (result) {
-                    console.log(element + ' - ' + result.stdout);
-                    if (element === "data\\apps\\MoreLocale.apk") {
-                        await shellExec('./adb shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                            console.log('moreLocale Activated On Watch');
-                        });
-                    }
-                });
-            }
+            await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
+                console.log(element + ' - ' + result.stdout);
+                if (element === "data\\apps\\MoreLocale.apk") {
+                    await shellExec(adbRun + ' shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
+                        console.log('moreLocale Activated On Watch');
+                    });
+                }
+            });
         }
         console.log(chalk.green('Compatible Apps Installed'))
         await common.pause(2000)
@@ -110,25 +98,14 @@ module.exports = {
 
         for (let element of apkList) {
             console.log('Installing ' + element)
-            if (process.platform === 'win32' || process.platform === 'win64') {
-                await shellExec('adb install -r ' + element).then(async function (result) {
-                    console.log(element + ' - ' + result.stdout);
-                    if (element === "data\\apps\\MoreLocale.apk") {
-                        await shellExec('adb shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                            console.log('moreLocale Activated On Watch');
-                        });
-                    }
-                });
-            } else {
-                await shellExec('./adb install -r ' + element).then(async function (result) {
-                    console.log(element + ' - ' + result.stdout);
-                    if (element === "data\\apps\\MoreLocale.apk") {
-                        await shellExec('./adb shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                            console.log('moreLocale Activated On Watch');
-                        });
-                    }
-                });
-            }
+            await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
+                console.log(element + ' - ' + result.stdout);
+                if (element === "data\\apps\\MoreLocale.apk") {
+                    await shellExec(adbRun + ' shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
+                        console.log('moreLocale Activated On Watch');
+                    });
+                }
+            });
         }
         console.log(chalk.green('Compatible Apps Installed'))
         await common.pause(2000)
@@ -138,15 +115,9 @@ module.exports = {
         common.header('Remove Apps')
         const value = await inquirer.removeAppsList();
         for (let element of value.removeAppsList) {
-            if (process.platform === 'win32' || process.platform === 'win64') {
-                await shellExec('adb shell pm uninstall -k --user 0 ' + element).then(function (result) {
-                    console.log('Removing ' + element + ' - ' + result.stdout);
-                });
-            } else {
-                await shellExec('./adb shell pm uninstall -k --user 0 ' + element).then(function (result) {
-                    console.log('Removing ' + element + ' - ' + result.stdout);
-                });
-            }
+            await shellExec(adbRun + ' shell pm uninstall -k --user 0 ' + element).then(function (result) {
+                console.log('Removing ' + element + ' - ' + result.stdout);
+            });
         }
         console.log(chalk.green('Removal Complete'))
         await common.pause(2000)
@@ -156,15 +127,9 @@ module.exports = {
         common.header('Restore Apps')
         const value = await inquirer.removeAppsList();
         for (let element of value.removeAppsList) {
-            if (process.platform === 'win32' || process.platform === 'win64') {
-                await shellExec('adb shell cmd package install-existing ' + element).then(function (result) {
-                    console.log('Restoring ' + element + ' - ' + result.stdout);
-                });
-            } else {
-                await shellExec('./adb shell cmd package install-existing ' + element).then(function (result) {
-                    console.log('Restoring ' + element + ' - ' + result.stdout);
-                });
-            }
+            await shellExec(adbRun + ' shell cmd package install-existing ' + element).then(function (result) {
+                console.log('Restoring ' + element + ' - ' + result.stdout);
+            });
         }
         console.log(chalk.green('Restore Complete'))
         await common.pause(2000)
@@ -175,74 +140,45 @@ module.exports = {
         common.header('Connect Wifi')
         if (miwatchData.ipAddress !== "") {
             console.log('Trying to connect with stored ipAddress')
-            if (process.platform === 'win32' || process.platform === 'win64') {
-                shellExec('adb connect ' + miwatchData.ipAddress).then(async function (result) {
-                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                        console.log(chalk.green('MiWatch Connected'))
-                        await common.pause(3000)
-                        module.exports.mainMenu()
-                    } else {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    }
-                }).catch()
-            } else {
-                shellExec('./adb connect ' + miwatchData.ipAddress).then(async function (result) {
-                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                        console.log(chalk.green('MiWatch Connected'))
-                        files.writeIpAddress(miWatchIpaddress)
-                        await common.pause(3000)
-                        module.exports.mainMenu()
-                    } else {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    }
-                }).catch()
-            }
+            shellExec(adbRun + ' connect ' + miwatchData.ipAddress).then(async function (result) {
+                if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
+                    console.log(chalk.green('MiWatch Connected'))
+                    await common.pause(3000)
+                    module.exports.mainMenu()
+                } else {
+                    console.log(chalk.red('MiWatch not found'))
+                    await common.pause(2000)
+                    console.log(chalk.white('Try Again'))
+                    await common.pause(1000)
+                    module.exports.connectWifi()
+                }
+            }).catch()
         } else {
             const value = await inquirer.connectWifi();
             const miWatchIpaddress = value.connectWifi
-            if (process.platform === 'win32' || process.platform === 'win64') {
-                shellExec('adb connect ' + miWatchIpaddress).then(async function (result) {
-                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                        console.log(chalk.green('MiWatch Connected'))
-                        files.writeIpAddress(miWatchIpaddress)
-                        await common.pause(3000)
-                        module.exports.mainMenu()
-                    } else {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    }
-                }).catch()
-            } else {
-                shellExec('./adb connect ' + miWatchIpaddress).then(async function (result) {
-                    if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                        console.log(chalk.green('MiWatch Connected'))
-                        files.writeIpAddress(miWatchIpaddress)
-                        await common.pause(3000)
-                        module.exports.mainMenu()
-                    } else {
-                        console.log(chalk.red('MiWatch not found'))
-                        await common.pause(2000)
-                        console.log(chalk.white('Try Again'))
-                        await common.pause(1000)
-                        module.exports.connectWifi()
-                    }
-                }).catch()
-            }
+            shellExec(adbRun + ' connect ' + miWatchIpaddress).then(async function (result) {
+                if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
+                    console.log(chalk.green('MiWatch Connected'))
+                    files.writeIpAddress(miWatchIpaddress)
+                    await common.pause(3000)
+                    module.exports.mainMenu()
+                } else {
+                    console.log(chalk.red('MiWatch not found'))
+                    await common.pause(2000)
+                    console.log(chalk.white('Try Again'))
+                    await common.pause(1000)
+                    module.exports.connectWifi()
+                }
+            }).catch()
         }
     },
     mainMenu: async () => {
         common.header('Main Menu')
+        if (process.platform === 'win32' || process.platform === 'win64') {
+            adbRun = 'adb'
+        } else {
+            adbRun = './adb'
+        }
         const mainMenuSelection = await inquirer.mainMenu();
         switch (mainMenuSelection.mainMenu) {
             case 'connect to miwatch via wifi':
@@ -257,9 +193,9 @@ module.exports = {
             case 'install compatible apps':
                 module.exports.compatibleApps()
                 break;
-            case 'remove compatible apps' :
+            case 'remove compatible apps':
                 module.exports.removeCompatibleApps()
-                break;    
+                break;
             case 'quit':
                 break;
             default:
