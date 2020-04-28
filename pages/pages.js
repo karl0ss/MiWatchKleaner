@@ -18,7 +18,11 @@ module.exports = {
         let installedAppList
         common.header('Remove Installed Apps')
         await shellExec(adbRun + ' shell pm list packages -3').then(async function (result) {
-            installedAppList = result.stdout.split('\r\n'); // split string on comma space
+            if (process.platform === 'win32' || process.platform === 'win64') {
+                installedAppList = result.stdout.split('\r\n'); // split string on comma space
+            } else {
+                installedAppList = result.stdout.split('\n'); // split string on comma space
+            }
             installedAppList.splice(-1, 1)
         });
         const value = await inquirer.installedApps(installedAppList);
@@ -180,7 +184,7 @@ module.exports = {
             case 'quit':
                 break;
             default:
-                // code block
+            // code block
         }
     }
 };
