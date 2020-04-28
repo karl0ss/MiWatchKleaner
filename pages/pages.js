@@ -15,41 +15,22 @@ let adbRun
 
 module.exports = {
     removeCompatibleApps: async () => {
-        common.header('Remove Compatible Apps')
-        let compatibleApps
-        let url = "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/compatibleApps.json";
-        http.get(url, (res) => {
-            let body = "";
-
-            res.on("data", (chunk) => {
-                body += chunk;
-            });
-
-            res.on("end", () => {
-                try {
-                    compatibleApps = JSON.parse(body);
-                    // do something with JSON
-                } catch (error) {
-                    console.error(error.message);
-                };
-            });
-
-        }).on("error", (error) => {
-            console.error(error.message);
+        let installedAppList
+        common.header('Remove Installed Apps')
+        await shellExec(adbRun + ' shell pm list packages -3').then(async function (result) {
+            installedAppList = result.stdout.split('\r\n'); // split string on comma space
+            installedAppList.splice(-1, 1)
         });
-        const value = await inquirer.compatibleApps();
+        const value = await inquirer.installedApps(installedAppList);
+
         for (let element of value.removeAppsList) {
-            console.log('Installing ' + element)
-            await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
+            console.log('Removing ' + element)
+            const package = element.substring(8)
+            await shellExec(adbRun + ' uninstall ' + package).then(async function (result) {
                 console.log(element + ' - ' + result.stdout);
-                if (element === "data\\apps\\MoreLocale.apk") {
-                    await shellExec(adbRun + ' shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                        console.log('moreLocale Activated On Watch');
-                    });
-                }
             });
         }
-        console.log(chalk.green('Compatible Apps Installed'))
+        console.log(chalk.green('Removed Selected User Apps'))
         await common.pause(2000)
         module.exports.mainMenu()
     },
@@ -193,7 +174,7 @@ module.exports = {
             case 'install compatible apps':
                 module.exports.compatibleApps()
                 break;
-            case 'remove compatible apps':
+            case 'remove installed apps':
                 module.exports.removeCompatibleApps()
                 break;
             case 'quit':
