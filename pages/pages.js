@@ -18,25 +18,37 @@ module.exports = {
         let installedAppList
         common.header('Remove Installed Apps')
         await shellExec(adbRun + ' shell pm list packages -3').then(async function (result) {
-            if (process.platform === 'win32' || process.platform === 'win64') {
-                installedAppList = result.stdout.split('\r\n'); // split string on comma space
+            if (result.stderr.includes('error')) {
+                console.log(chalk.red('Device not authorised'))
+                common.pause(3000)
+                await shellExec(adbRun + ' kill-server').then(async function (result) {
+                    console.log('Please reconnect to watch')
+                    common.pause(3000)
+                    module.exports.mainMenu()
+                })
             } else {
-                installedAppList = result.stdout.split('\n'); // split string on comma space
-            }
-            installedAppList.splice(-1, 1)
-        });
-        const value = await inquirer.installedApps(installedAppList);
+                if (process.platform === 'win32' || process.platform === 'win64') {
+                    installedAppList = result.stdout.split('\r\n'); // split string on comma space
+                    installedAppList.splice(-1, 1)
+                } else {
+                    installedAppList = result.stdout.split('\n'); // split string on comma space
+                    installedAppList.splice(-1, 1)
+                }
+                const value = await inquirer.installedApps(installedAppList);
 
-        for (let element of value.removeAppsList) {
-            console.log('Removing ' + element)
-            const package = element.substring(8)
-            await shellExec(adbRun + ' uninstall ' + package).then(async function (result) {
-                console.log(element + ' - ' + result.stdout);
-            });
-        }
+            for (let element of value.removeAppsList) {
+                console.log('Removing ' + element)
+                const package = element.substring(8)
+                await shellExec(adbRun + ' uninstall ' + package).then(async function (result) {
+                    console.log(element + ' - ' + result.stdout);
+                });
+            }
+        // });
         console.log(chalk.green('Removed Selected User Apps'))
         await common.pause(2000)
         module.exports.mainMenu()
+            }
+            })
     },
     compatibleApps: async () => {
         common.header('Install Compatible Apps')
@@ -133,6 +145,7 @@ module.exports = {
                 } else {
                     console.log(chalk.red('MiWatch not found'))
                     await common.pause(2000)
+                    files.writeIpAddress('')
                     console.log(chalk.white('Try Again'))
                     await common.pause(1000)
                     module.exports.connectWifi()
