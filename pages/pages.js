@@ -49,21 +49,21 @@ module.exports = {
                 }
                 const value = await inquirer.installedApps(installedAppList);
 
-            for (let element of value.removeAppsList) {
-                console.log('Removing ' + element)
-                logger.info('Removing ' + element)
-                const package = element.substring(8)
-                await shellExec(adbRun + ' uninstall ' + package).then(async function (result) {
-                    console.log(element + ' - ' + result.stdout);
-                    logger.info(element + ' - ' + result.stdout);
-                });
+                for (let element of value.removeAppsList) {
+                    console.log('Removing ' + element)
+                    logger.info('Removing ' + element)
+                    const package = element.substring(8)
+                    await shellExec(adbRun + ' uninstall ' + package).then(async function (result) {
+                        console.log(element + ' - ' + result.stdout);
+                        logger.info(element + ' - ' + result.stdout);
+                    });
+                }
+                console.log(chalk.green('Removed Selected User Apps'))
+                logger.info('Removed Selected User Apps')
+                await common.pause(2000)
+                module.exports.mainMenu()
             }
-        console.log(chalk.green('Removed Selected User Apps'))
-        logger.info('Removed Selected User Apps')
-        await common.pause(2000)
-        module.exports.mainMenu()
-            }
-            })
+        })
     },
     compatibleApps: async () => {
         logger.info("Compatible Apps")
@@ -103,7 +103,7 @@ module.exports = {
                     }
                     const dl = new DownloaderHelper(element2.url, './data/apps/', options);
                     dl.on('end', () => console.log('Downloading Latest ' + element2.name + ' Complete'),
-                    logger.info('Downloading Latest ' + element2.name + ' Complete')
+                        logger.info('Downloading Latest ' + element2.name + ' Complete')
                     )
                     await dl.start();
                 }
@@ -116,6 +116,10 @@ module.exports = {
             console.log('Installing ' + element)
             logger.info('Installing ' + element)
             await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
+                if (result.stderr != '') {
+                    logger.info('Error ' + result.stderr);
+                    console.log(chalk.redBright('Error ' + result.stderr));
+                }
                 console.log(element + ' - ' + result.stdout);
                 logger.info(element + ' - ' + result.stdout);
                 if (element === "data\\apps\\MoreLocale.apk") {
@@ -137,8 +141,13 @@ module.exports = {
         const value = await inquirer.removeAppsList();
         for (let element of value.removeAppsList) {
             await shellExec(adbRun + ' shell pm uninstall -k --user 0 ' + element).then(function (result) {
+                if (result.stderr != '') {
+                    logger.info('Error ' + result.stderr);
+                    console.log(chalk.redBright('Error - Device not authorised'));
+                } else {
                 logger.info('Removing ' + element + ' - ' + result.stdout);
                 console.log('Removing ' + element + ' - ' + result.stdout);
+            }
             });
         }
         console.log(chalk.green('Removal Complete'))
@@ -152,8 +161,13 @@ module.exports = {
         const value = await inquirer.removeAppsList();
         for (let element of value.removeAppsList) {
             await shellExec(adbRun + ' shell cmd package install-existing ' + element).then(function (result) {
+                if (result.stderr != '') {
+                    logger.info('Error ' + result.stderr);
+                    console.log(chalk.redBright('Error - Device not authorised'));
+                } else {
                 logger.info('Restoring ' + element + ' - ' + result.stdout);
                 console.log('Restoring ' + element + ' - ' + result.stdout);
+                }
             });
         }
         console.log(chalk.green('Restore Complete'))
@@ -197,7 +211,11 @@ module.exports = {
                     logger.info("Connect Wifi Complete")
                     module.exports.mainMenu()
                 } else {
-                    console.log(chalk.red('MiWatch not found'))
+                    if (result.stdout.includes('failed to authenticate')) {
+                        console.log(chalk.redBright('MiWatch not authenticated'))
+                    } else {
+                        console.log(chalk.red('MiWatch not found'))
+                    }
                     await common.pause(2000)
                     console.log(chalk.white('Try Again'))
                     await common.pause(1000)
