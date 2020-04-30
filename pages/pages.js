@@ -10,20 +10,33 @@ const {
 const getFilesIn = require('get-files-in')
 const http = require('http')
 var shell = require('shelljs');
+let logger = require('perfect-logger');
 
 let adbRun
+
+logger.initialize('RunTIme', {
+    logLevelFile: 0,                    // Log level for file
+    logLevelConsole: -1,                 // Log level for STDOUT/STDERR
+    logDirectory: 'data/',              // Log directory
+});
 
 module.exports = {
     removeCompatibleApps: async () => {
         let installedAppList
         common.header('Remove Installed Apps')
+        logger.info('Remove Installed Apps')
         await shellExec(adbRun + ' shell pm list packages -3').then(async function (result) {
+            logger.info('Packages recieved from watch')
             if (result.stderr.includes('error')) {
+                logger.info(result.stderr)
                 console.log(chalk.red('Device not authorised'))
                 common.pause(3000)
                 await shellExec(adbRun + ' kill-server').then(async function (result) {
+                    logger.info('Restarting ADB')
+                    logger.info(result.stdout)
                     console.log('Please reconnect to watch')
                     common.pause(3000)
+                    logger.info('Remove Installed Apps Failed')
                     module.exports.mainMenu()
                 })
             } else {
@@ -38,19 +51,22 @@ module.exports = {
 
             for (let element of value.removeAppsList) {
                 console.log('Removing ' + element)
+                logger.info('Removing ' + element)
                 const package = element.substring(8)
                 await shellExec(adbRun + ' uninstall ' + package).then(async function (result) {
                     console.log(element + ' - ' + result.stdout);
+                    logger.info(element + ' - ' + result.stdout);
                 });
             }
-        // });
         console.log(chalk.green('Removed Selected User Apps'))
+        logger.info('Removed Selected User Apps')
         await common.pause(2000)
         module.exports.mainMenu()
             }
             })
     },
     compatibleApps: async () => {
+        logger.info("Compatible Apps")
         common.header('Install Compatible Apps')
         let compatibleApps
         let url = "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/compatibleApps.json";
@@ -64,6 +80,7 @@ module.exports = {
             res.on("end", () => {
                 try {
                     compatibleApps = JSON.parse(body);
+                    logger.info("Compatible Apps found online")
                     // do something with JSON
                 } catch (error) {
                     console.error(error.message);
@@ -85,7 +102,9 @@ module.exports = {
                         override: true,
                     }
                     const dl = new DownloaderHelper(element2.url, './data/apps/', options);
-                    dl.on('end', () => console.log('Downloading Latest ' + element2.name + ' Complete'))
+                    dl.on('end', () => console.log('Downloading Latest ' + element2.name + ' Complete'),
+                    logger.info('Downloading Latest ' + element2.name + ' Complete')
+                    )
                     await dl.start();
                 }
             }
@@ -95,52 +114,65 @@ module.exports = {
 
         for (let element of apkList) {
             console.log('Installing ' + element)
+            logger.info('Installing ' + element)
             await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
                 console.log(element + ' - ' + result.stdout);
+                logger.info(element + ' - ' + result.stdout);
                 if (element === "data\\apps\\MoreLocale.apk") {
                     await shellExec(adbRun + ' shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
                         console.log('moreLocale Activated On Watch');
+                        logger.info('moreLocale Activated On Watch');
                     });
                 }
             });
         }
         console.log(chalk.green('Compatible Apps Installed'))
+        logger.info('Compatible Apps Installed')
         await common.pause(2000)
         module.exports.mainMenu()
     },
     removeApps: async () => {
+        logger.info("Remove Apps")
         common.header('Remove Apps')
         const value = await inquirer.removeAppsList();
         for (let element of value.removeAppsList) {
             await shellExec(adbRun + ' shell pm uninstall -k --user 0 ' + element).then(function (result) {
+                logger.info('Removing ' + element + ' - ' + result.stdout);
                 console.log('Removing ' + element + ' - ' + result.stdout);
             });
         }
         console.log(chalk.green('Removal Complete'))
         await common.pause(2000)
+        logger.info("Remove Complete")
         module.exports.mainMenu()
     },
     restoreApps: async () => {
+        logger.info("Restore Apps")
         common.header('Restore Apps')
         const value = await inquirer.removeAppsList();
         for (let element of value.removeAppsList) {
             await shellExec(adbRun + ' shell cmd package install-existing ' + element).then(function (result) {
+                logger.info('Restoring ' + element + ' - ' + result.stdout);
                 console.log('Restoring ' + element + ' - ' + result.stdout);
             });
         }
         console.log(chalk.green('Restore Complete'))
         await common.pause(2000)
+        logger.info("Restore Apps Complete")
         module.exports.mainMenu()
     },
     connectWifi: async () => {
+        logger.info("Connect Wifi")
         const miwatchData = JSON.parse(fs.readFileSync('./data/MiWatch.json', 'utf8'));
         common.header('Connect Wifi')
         if (miwatchData.ipAddress !== "") {
             console.log('Trying to connect with stored ipAddress')
             shellExec(adbRun + ' connect ' + miwatchData.ipAddress).then(async function (result) {
+                logger.info("Connect Wifi Result " + result.stdout)
                 if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
                     console.log(chalk.green('MiWatch Connected'))
                     await common.pause(3000)
+                    logger.info("Connect Wifi Complete")
                     module.exports.mainMenu()
                 } else {
                     console.log(chalk.red('MiWatch not found'))
@@ -152,13 +184,16 @@ module.exports = {
                 }
             }).catch()
         } else {
+            
             const value = await inquirer.connectWifi();
             const miWatchIpaddress = value.connectWifi
             shellExec(adbRun + ' connect ' + miWatchIpaddress).then(async function (result) {
+                logger.info("Connect Wifi Result " + result.stdout)
                 if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
                     console.log(chalk.green('MiWatch Connected'))
                     files.writeIpAddress(miWatchIpaddress)
                     await common.pause(3000)
+                    logger.info("Connect Wifi Complete")
                     module.exports.mainMenu()
                 } else {
                     console.log(chalk.red('MiWatch not found'))
@@ -177,6 +212,7 @@ module.exports = {
         } else {
             adbRun = './adb'
         }
+        logger.info(process.platform + " detected")
         const mainMenuSelection = await inquirer.mainMenu();
         switch (mainMenuSelection.mainMenu) {
             case 'connect to miwatch via wifi':
