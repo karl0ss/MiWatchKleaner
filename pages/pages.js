@@ -166,6 +166,7 @@ module.exports = {
         const miwatchData = JSON.parse(fs.readFileSync('./data/MiWatch.json', 'utf8'));
         common.header('Connect Wifi')
         if (miwatchData.ipAddress !== "") {
+            await shellExec(adbRun + ' kill-server')
             console.log('Trying to connect with stored ipAddress')
             shellExec(adbRun + ' connect ' + miwatchData.ipAddress).then(async function (result) {
                 logger.info("Connect Wifi Result " + result.stdout)
@@ -184,7 +185,7 @@ module.exports = {
                 }
             }).catch()
         } else {
-            
+            await shellExec(adbRun + ' kill-server')
             const value = await inquirer.connectWifi();
             const miWatchIpaddress = value.connectWifi
             shellExec(adbRun + ' connect ' + miWatchIpaddress).then(async function (result) {
