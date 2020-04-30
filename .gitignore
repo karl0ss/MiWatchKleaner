@@ -3,3 +3,4 @@ data/MiWatch.json
 data/apps/*.apk
 release/
 data/*.log
+logger.lock
