@@ -118,7 +118,7 @@ module.exports = {
             await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
                 if (result.stderr != '') {
                     logger.info('Error ' + result.stderr);
-                    console.log(chalk.redBright('Error ' + result.stderr));
+                    console.log(chalk.redBright('Error - Device not authorised'));
                 }
                 console.log(element + ' - ' + result.stdout);
                 logger.info(element + ' - ' + result.stdout);
