@@ -15,9 +15,9 @@ let logger = require('perfect-logger');
 let adbRun
 
 logger.initialize('RunTIme', {
-    logLevelFile: 0,                    // Log level for file
-    logLevelConsole: -1,                 // Log level for STDOUT/STDERR
-    logDirectory: 'data/',              // Log directory
+    logLevelFile: 0,          // Log level for file
+    logLevelConsole: -1,      // Log level for STDOUT/STDERR
+    logDirectory: 'data/',    // Log directory
 });
 
 module.exports = {
@@ -145,9 +145,9 @@ module.exports = {
                     logger.info('Error ' + result.stderr);
                     console.log(chalk.redBright('Error - Device not authorised'));
                 } else {
-                logger.info('Removing ' + element + ' - ' + result.stdout);
-                console.log('Removing ' + element + ' - ' + result.stdout);
-            }
+                    logger.info('Removing ' + element + ' - ' + result.stdout);
+                    console.log('Removing ' + element + ' - ' + result.stdout);
+                }
             });
         }
         console.log(chalk.green('Removal Complete'))
@@ -165,8 +165,8 @@ module.exports = {
                     logger.info('Error ' + result.stderr);
                     console.log(chalk.redBright('Error - Device not authorised'));
                 } else {
-                logger.info('Restoring ' + element + ' - ' + result.stdout);
-                console.log('Restoring ' + element + ' - ' + result.stdout);
+                    logger.info('Restoring ' + element + ' - ' + result.stdout);
+                    console.log('Restoring ' + element + ' - ' + result.stdout);
                 }
             });
         }
