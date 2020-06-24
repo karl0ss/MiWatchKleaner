@@ -122,10 +122,12 @@ module.exports = {
                 }
                 console.log(element + ' - ' + result.stdout);
                 logger.info(element + ' - ' + result.stdout);
-                if (element === "data\\apps\\MoreLocale.apk") {
-                    await shellExec(adbRun + ' shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                        console.log('moreLocale Activated On Watch');
-                        logger.info('moreLocale Activated On Watch');
+
+                if (element === "data\\apps\\com.alberto.locale.apk") {
+                    await shellExec(adbRun + ' shell pm grant com.alberto.locale android.permission.CHANGE_CONFIGURATION && ' + adbRun + ' shell am start -n com.alberto.locale/com.alberto.locale.MainActivity && ' + adbRun + ' shell pm grant com.alberto.locale android.permission.CHANGE_CONFIGURATION').then(function (result) {
+                        console.log(result)
+                        console.log('Alberto Locale Activated On Watch');
+                        logger.info('Alberto Locale Activated On Watch');
                     });
                 }
             });

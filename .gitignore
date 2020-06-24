@@ -4,3 +4,4 @@ data/apps/*.apk
 release/
 data/*.log
 logger.lock
+logger.lock
