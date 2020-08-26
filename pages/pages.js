@@ -123,6 +123,34 @@ module.exports = {
                 console.log(element + ' - ' + result.stdout);
                 logger.info(element + ' - ' + result.stdout);
 
+                if (element === "data\\apps\\simpleweather_base.apk") {
+                    const dl = new DownloaderHelper('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.armeabi_v7a.apk', './data/apps/', {
+                        override: true,
+                    });
+                    dl.on('end', () => console.log('Downloading Latest Complete'),
+                        logger.info('Downloading Latest Complete')
+                    )
+                    const dl2 = new DownloaderHelper('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.xhdpi.apk', './data/apps/', {
+                        override: true,
+                    });
+                    dl2.on('end', () => console.log('Downloading Latest Complete'),
+                        logger.info('Downloading Latest Complete')
+                    )
+                    await dl.start();
+                    await dl2.start();
+                    await shellExec(adbRun + ' install-multiple "data\\apps\\simpleweather_base.apk" "data\\apps\\simpleweather_split_config.armeabi_v7a.apk" "data\\apps\\simpleweather_split_config.xhdpi.apk"').then(function (result) {
+                        console.log(result)
+                        console.log('moreLocale Activated On Watch');
+                        logger.info('moreLocale Activated On Watch');
+                    })
+                }
+
+                if (element === "data\\apps\\MoreLocale.apk") {
+                    await shellExec(adbRun + ' shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
+                        console.log('moreLocale Activated On Watch');
+                        logger.info('moreLocale Activated On Watch');
+                    })
+                }
                 if (element === "data\\apps\\com.alberto.locale.apk") {
                     await shellExec(adbRun + ' shell pm grant com.alberto.locale android.permission.CHANGE_CONFIGURATION && ' + adbRun + ' shell am start -n com.alberto.locale/com.alberto.locale.MainActivity && ' + adbRun + ' shell pm grant com.alberto.locale android.permission.CHANGE_CONFIGURATION').then(function (result) {
                         console.log(result)
