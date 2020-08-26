@@ -170,6 +170,7 @@ module.exports = {
         common.header('Remove Apps')
         const value = await inquirer.removeAppsList();
         for (let element of value.removeAppsList) {
+            // await shellExec(adbRun + ' shell pm  disable-user --0 ' + element).then(function (result) {
             await shellExec(adbRun + ' shell pm uninstall -k --user 0 ' + element).then(function (result) {
                 if (result.stderr != '') {
                     logger.info('Error ' + result.stderr);
