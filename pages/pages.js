@@ -12,6 +12,7 @@ const http = require('http')
 var shell = require('shelljs');
 let logger = require('perfect-logger');
 
+
 let adbRun
 
 logger.initialize('RunTIme', {
@@ -140,11 +141,10 @@ module.exports = {
                     await dl2.start();
                     await shellExec(adbRun + ' install-multiple "data\\apps\\simpleweather_base.apk" "data\\apps\\simpleweather_split_config.armeabi_v7a.apk" "data\\apps\\simpleweather_split_config.xhdpi.apk"').then(function (result) {
                         console.log(result)
-                        console.log('moreLocale Activated On Watch');
-                        logger.info('moreLocale Activated On Watch');
+                        console.log('simpleWeather Activated On Watch');
+                        logger.info('simpleWeather Activated On Watch');
                     })
                 }
-
                 if (element === "data\\apps\\MoreLocale.apk") {
                     await shellExec(adbRun + ' shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
                         console.log('moreLocale Activated On Watch');
@@ -255,6 +255,63 @@ module.exports = {
             }).catch()
         }
     },
+    oneClick: async () => {
+        logger.info("1-Click Karl0ss Klean")
+        common.header('1-Click Karl0ss Klean')
+        const value = JSON.parse(fs.readFileSync('./data/packageList.json', 'utf8'));
+        for (let element of value.apps) {
+            await shellExec(adbRun + ' shell pm uninstall -k --user 0 ' + element).then(function (result) {
+                if (result.stderr != '') {
+                    logger.info('Error ' + result.stderr);
+                    console.log(chalk.redBright('Error - Device not authorised'));
+                } else {
+                    logger.info('Removing ' + element + ' - ' + result.stdout);
+                    console.log('Removing ' + element + ' - ' + result.stdout);
+                }
+            });
+        }
+        console.log(chalk.green('Removal Complete'))
+        await common.pause(2000)
+        logger.info("Remove Complete")
+        logger.info("Compatible Apps")
+
+        await shell.rm('-rf', './data/apps/*.apk');
+
+        let url = "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/compatibleApps.json";
+        const compatibleApps = await common.downloadFile(url)
+
+        for (const element of compatibleApps) {
+            if (element.Klean === "X") {
+                const options = {
+                    override: true,
+                }
+                const dl = new DownloaderHelper(element.url, './data/apps/', options);
+                await dl.on('end', () => console.log('Downloading Latest ' + element.name + ' Complete'),
+                    logger.info('Downloading Latest ' + element.name + ' Complete')
+                )
+                await dl.start();
+            }
+        }
+        const apkList = await getFilesIn('./data/apps', matchFiletypes = ['apk'], checkSubDirectories = false)
+
+        for (let element of apkList) {
+            console.log('Installing ' + element)
+            logger.info('Installing ' + element)
+            await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
+                if (result.stderr != '') {
+                    logger.info('Error ' + result.stderr);
+                    console.log(chalk.redBright('Error - Device not authorised'));
+                }
+                console.log(element + ' - ' + result.stdout);
+                logger.info(element + ' - ' + result.stdout);
+
+            });
+        }
+        console.log(chalk.green('Compatible Apps Installed'))
+        logger.info('Compatible Apps Installed')
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
     mainMenu: async () => {
         common.header('Main Menu')
         if (process.platform === 'win32' || process.platform === 'win64') {
@@ -267,6 +324,9 @@ module.exports = {
         switch (mainMenuSelection.mainMenu) {
             case 'connect to miwatch via wifi':
                 module.exports.connectWifi()
+                break;
+            case '1-click karl0ss klean':
+                module.exports.oneClick()
                 break;
             case 'remove xiaomi apps':
                 module.exports.removeApps()
