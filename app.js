@@ -1,3 +1,3 @@
 const pages = require('./pages/pages')
 
-pages.mainMenu();
+pages.connectWatch();

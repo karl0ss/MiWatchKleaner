@@ -1,6 +1,6 @@
 {
-  "name": "miwatchkleaner2.0",
-  "version": "2.0.10",
+  "name": "miwatchkleaner",
+  "version": "3.0.0",
   "description": "MiWatch Cleaning Tool",
   "main": "app.js",
   "bin": "app.js",

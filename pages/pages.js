@@ -7,8 +7,15 @@ const fs = require('fs')
 const getFilesIn = require('get-files-in')
 var shell = require('shelljs');
 let logger = require('perfect-logger');
+const globalVariables = require('../lib/globalVars');
 
-let adbRun
+
+logger.info(process.platform + " detected")
+if (process.platform === 'win32' || process.platform === 'win64') {
+    adbRun = 'adb'
+} else {
+    adbRun = './adb'
+}
 
 logger.initialize('RunTIme', {
     logLevelFile: 0,          // Log level for file
@@ -162,46 +169,55 @@ module.exports = {
         logger.info("Restore Apps Complete")
         module.exports.mainMenu()
     },
-    connectWifi: async () => {
-        logger.info("Connect Wifi")
-        const miwatchData = JSON.parse(fs.readFileSync('./data/MiWatch.json', 'utf8'));
-        common.header('Connect Wifi')
-        if (miwatchData.ipAddress !== "") {
-            await shellExec(adbRun + ' kill-server')
-            console.log('Trying to connect with stored ipAddress')
-            shellExec(adbRun + ' connect ' + miwatchData.ipAddress).then(async function (result) {
-                logger.info("Connect Wifi Result " + result.stdout)
-                if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                    console.log(chalk.green('MiWatch Connected'))
+    connectWatch: async () => {
+        logger.info("Connect to watch")
+        common.header('Connect to watch')
+        const value = await inquirer.connectionType()
+        if (value.connection === "usb") {
+            await shellExec(adbRun + ' kill-server').then(async function (result) {
+                logger.info('Restarting ADB')
+                logger.info(result.stdout)
+            })
+            await shellExec(adbRun + ' devices').then(async function (result) {
+                console.log(result.stdout)
+                if (result.stdout.includes('device', 15)) {
+                    console.log(chalk.green('MiWatch Connected via USB'))
                     await common.pause(3000)
-                    logger.info("Connect Wifi Complete")
+                    logger.info("MiWatch connected")
+                    globalVariables.localUSB = "X"
                     module.exports.mainMenu()
                 } else {
                     console.log(chalk.red('MiWatch not found'))
+                    logger.info("MiWatch not found")
                     await common.pause(2000)
-                    files.writeIpAddress('')
                     console.log(chalk.white('Try Again'))
                     await common.pause(1000)
-                    module.exports.connectWifi()
+                    module.exports.connectWatch()
                 }
-            }).catch()
-        } else {
-            await shellExec(adbRun + ' kill-server')
+            })
+        }
+        if (value.connection === "wifi") {
             const value = await inquirer.connectWifi();
-            const miWatchIpaddress = value.connectWifi
-            shellExec(adbRun + ' connect ' + miWatchIpaddress).then(async function (result) {
+            globalVariables.miWatchIpaddress = value.connectWifi
+            await shellExec(adbRun + ' kill-server').then(async function (result) {
+                logger.info('Restarting ADB')
+                logger.info(result.stdout)
+            })
+            await shellExec(adbRun + ' connect ' + globalVariables.miWatchIpaddress).then(async function (result) {
                 logger.info("Connect Wifi Result " + result.stdout)
                 if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
                     console.log(chalk.green('MiWatch Connected'))
-                    files.writeIpAddress(miWatchIpaddress)
+                    globalVariables.localUSB = ""
                     await common.pause(3000)
                     logger.info("Connect Wifi Complete")
                     module.exports.mainMenu()
                 } else {
                     if (result.stdout.includes('failed to authenticate')) {
                         console.log(chalk.redBright('MiWatch not authenticated'))
+                        logger.info('MiWatch not authenticated')
                     } else {
-                        console.log(chalk.red('MiWatch not found'))
+                        console.log(chalk.red(result.stdout))
+                        logger.info(result.stdout)
                     }
                     await common.pause(2000)
                     console.log(chalk.white('Try Again'))
@@ -287,16 +303,10 @@ module.exports = {
     },
     mainMenu: async () => {
         common.header('Main Menu')
-        if (process.platform === 'win32' || process.platform === 'win64') {
-            adbRun = 'adb'
-        } else {
-            adbRun = './adb'
-        }
-        logger.info(process.platform + " detected")
         const mainMenuSelection = await inquirer.mainMenu();
         switch (mainMenuSelection.mainMenu) {
-            case 'connect to miwatch via wifi':
-                module.exports.connectWifi()
+            case 'connect to miwatch':
+                module.exports.connectWatch()
                 break;
             case '1-click karl0ss klean':
                 module.exports.oneClick()
