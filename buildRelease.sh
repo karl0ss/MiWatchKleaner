@@ -5,9 +5,9 @@ mv miwatchkleaner2-* ./release && \
 mv ./release/miwatchkleaner2-win-* ./release/Windows && \
 mv ./release/miwatchkleaner2-linux-* ./release/Linux && \
 mv ./release/miwatchkleaner2-macos-* ./release/MacOs && \
-cp ./data/packageList.json ./release/Windows/data/ && \
-cp ./data/packageList.json ./release/MacOS/data/ && \
-cp ./data/packageList.json ./release/Linux/data/ && \
+cp ./data/xiaomiPackageRemovalList.json ./release/Windows/data/ && \
+cp ./data/xiaomiPackageRemovalList.json ./release/MacOS/data/ && \
+cp ./data/xiaomiPackageRemovalList.json ./release/Linux/data/ && \
 chmod 0777 ./release/**/adb && \
 chmod 0777 ./release/**/miwatchkleaner2-* && \
 chmod +x ./release/**/adb && \

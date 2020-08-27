@@ -31,7 +31,7 @@
     "scripts": [],
     "assets": [
       "node_modules/figlet/fonts/Standard.flf",
-      "data/packageList.json"
+      "data/xiaomiPackageRemovalList.json"
     ],
     "targets": [
       "node12-linux-x64",
