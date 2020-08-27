@@ -3,9 +3,7 @@ const common = require('../lib/common');
 const inquirer = require('../lib/inquirer');
 const shellExec = require('shell-exec')
 const files = require('../lib/files')
-const fs = require('fs')
 const getFilesIn = require('get-files-in')
-var shell = require('shelljs');
 let logger = require('perfect-logger');
 const globalVariables = require('../lib/globalVars');
 
@@ -301,6 +299,33 @@ module.exports = {
         logger.info("App Restore Complete")
         module.exports.mainMenu()
     },
+    batchInstallApks: async () => {
+        logger.info("Batch Install Apks")
+        common.header('Batch Install Apks')
+        
+        let apkList = await getFilesIn('./my_apk/', matchFiletypes = ['apk'], checkSubDirectories = false)
+
+        await files.renameLocalApk(apkList)
+
+        apkList = await getFilesIn('./my_apk/', matchFiletypes = ['apk'], checkSubDirectories = false)
+
+        for (let element of apkList) {
+            console.log('Installing ' + element)
+            logger.info('Installing ' + element)
+            await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
+                if (result.stderr != '') {
+                    logger.info('Error ' + result.stderr);
+                    console.log(chalk.redBright(result.stderr));
+                }
+                console.log(element + ' - ' + result.stdout);
+                logger.info(element + ' - ' + result.stdout);
+            });
+        }
+        console.log(chalk.green('Batch Install Apks Completed'))
+        logger.info('Batch Install Apks Completed')
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
     mainMenu: async () => {
         common.header('Main Menu')
         const mainMenuSelection = await inquirer.mainMenu();
@@ -320,11 +345,14 @@ module.exports = {
             case 'install compatible apps':
                 module.exports.compatibleApps()
                 break;
-            case 'remove installed apps':
+            case 'batch remove installed apps':
                 module.exports.removeCompatibleApps()
                 break;
             case 'restore any app':
                 module.exports.restoreAnyApp()
+                break;
+            case 'batch install apks':
+                module.exports.batchInstallApks()
                 break;
             case 'quit':
                 break;
