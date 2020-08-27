@@ -4,14 +4,9 @@ const inquirer = require('../lib/inquirer');
 const shellExec = require('shell-exec')
 const files = require('../lib/files')
 const fs = require('fs')
-const {
-    DownloaderHelper
-} = require('node-downloader-helper');
 const getFilesIn = require('get-files-in')
-const http = require('http')
 var shell = require('shelljs');
 let logger = require('perfect-logger');
-
 
 let adbRun
 
@@ -69,29 +64,8 @@ module.exports = {
     compatibleApps: async () => {
         logger.info("Compatible Apps")
         common.header('Install Compatible Apps')
-        let compatibleApps
-        let url = "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/compatibleApps.json";
-        http.get(url, (res) => {
-            let body = "";
 
-            res.on("data", (chunk) => {
-                body += chunk;
-            });
-
-            res.on("end", () => {
-                try {
-                    compatibleApps = JSON.parse(body);
-                    logger.info("Compatible Apps found online")
-                    // do something with JSON
-                } catch (error) {
-                    console.error(error.message);
-                };
-            });
-
-        }).on("error", (error) => {
-            console.error(error.message);
-        });
-
+        const compatibleApps = await common.getCompatibleAppsList()
         const value = await inquirer.compatibleApps();
 
         await shell.rm('-rf', './data/apps/*.apk');
@@ -99,14 +73,7 @@ module.exports = {
         for (let element of value.removeAppsList) {
             for (let element2 of compatibleApps) {
                 if (element === element2.name) {
-                    const options = {
-                        override: true,
-                    }
-                    const dl = new DownloaderHelper(element2.url, './data/apps/', options);
-                    dl.on('end', () => console.log('Downloading Latest ' + element2.name + ' Complete'),
-                        logger.info('Downloading Latest ' + element2.name + ' Complete')
-                    )
-                    await dl.start();
+                    await common.downloadFile(element2.url, './data/apps/' + element2.name + '.apk')
                 }
             }
         }
@@ -125,20 +92,8 @@ module.exports = {
                 logger.info(element + ' - ' + result.stdout);
 
                 if (element === "data\\apps\\simpleweather_base.apk") {
-                    const dl = new DownloaderHelper('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.armeabi_v7a.apk', './data/apps/', {
-                        override: true,
-                    });
-                    dl.on('end', () => console.log('Downloading Latest Complete'),
-                        logger.info('Downloading Latest Complete')
-                    )
-                    const dl2 = new DownloaderHelper('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.xhdpi.apk', './data/apps/', {
-                        override: true,
-                    });
-                    dl2.on('end', () => console.log('Downloading Latest Complete'),
-                        logger.info('Downloading Latest Complete')
-                    )
-                    await dl.start();
-                    await dl2.start();
+                    await common.downloadFile('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.armeabi_v7a.apk', './data/apps/simpleweather_split_config.armeabi_v7a.apk')
+                    await common.downloadFile('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.xhdpi.apk', './data/apps/simpleweather_split_config.xhdpi.apk')
                     await shellExec(adbRun + ' install-multiple "data\\apps\\simpleweather_base.apk" "data\\apps\\simpleweather_split_config.armeabi_v7a.apk" "data\\apps\\simpleweather_split_config.xhdpi.apk"').then(function (result) {
                         console.log(result)
                         console.log('simpleWeather Activated On Watch');
@@ -258,8 +213,8 @@ module.exports = {
     oneClick: async () => {
         logger.info("1-Click Karl0ss Klean")
         common.header('1-Click Karl0ss Klean')
-        const value = JSON.parse(fs.readFileSync('./data/packageList.json', 'utf8'));
-        for (let element of value.apps) {
+        const removalPackagesList = files.loadPackageList()
+        for (let element of removalPackagesList.apps) {
             await shellExec(adbRun + ' shell pm uninstall -k --user 0 ' + element).then(function (result) {
                 if (result.stderr != '') {
                     logger.info('Error ' + result.stderr);
@@ -277,19 +232,17 @@ module.exports = {
 
         await shell.rm('-rf', './data/apps/*.apk');
 
-        let url = "http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/compatibleApps.json";
-        const compatibleApps = await common.downloadFile(url)
+        const compatibleApps = await common.getCompatibleAppsList()
 
         for (const element of compatibleApps) {
             if (element.Klean === "X") {
-                const options = {
-                    override: true,
-                }
-                const dl = new DownloaderHelper(element.url, './data/apps/', options);
-                await dl.on('end', () => console.log('Downloading Latest ' + element.name + ' Complete'),
+                try {
                     logger.info('Downloading Latest ' + element.name + ' Complete')
-                )
-                await dl.start();
+                    await common.downloadFile(element.url, './data/apps/' + element.name + '.apk')
+                    logger.info('Downloading Latest ' + element.name + ' Complete')
+                } catch (error) {
+                    logger.info('Downloading Latest ' + element.name + ' FAILED')
+                }
             }
         }
         const apkList = await getFilesIn('./data/apps', matchFiletypes = ['apk'], checkSubDirectories = false)
@@ -310,6 +263,24 @@ module.exports = {
         console.log(chalk.green('Compatible Apps Installed'))
         logger.info('Compatible Apps Installed')
         await common.pause(2000)
+        module.exports.mainMenu()
+    },
+    restoreAnyApp: async () => {
+        logger.info("Restore Any App")
+        common.header('Restore Any App')
+        const value = await inquirer.restoreAnyApp();
+        await shellExec(adbRun + ' shell cmd package install-existing ' + value.restoreAnyApp).then(function (result) {
+            if (result.stderr != '') {
+                logger.info('Error ' + result.stderr);
+                console.log(chalk.redBright('Error - Device not authorised'));
+            } else {
+                logger.info('Restoring ' + value.restoreAnyApp + ' - ' + result.stdout);
+                console.log('Restoring ' + value.restoreAnyApp + ' - ' + result.stdout);
+            }
+        });
+        console.log(chalk.green('Restore Complete'))
+        await common.pause(2000)
+        logger.info("App Restore Complete")
         module.exports.mainMenu()
     },
     mainMenu: async () => {
@@ -339,6 +310,9 @@ module.exports = {
                 break;
             case 'remove installed apps':
                 module.exports.removeCompatibleApps()
+                break;
+            case 'restore any app':
+                module.exports.restoreAnyApp()
                 break;
             case 'quit':
                 break;

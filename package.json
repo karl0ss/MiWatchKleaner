@@ -1,6 +1,6 @@
 {
   "name": "miwatchkleaner2.0",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "MiWatch Cleaning Tool",
   "main": "app.js",
   "bin": "app.js",
@@ -21,11 +21,9 @@
     "figlet": "^1.3.0",
     "get-files-in": "^1.2.0",
     "inquirer": "^7.1.0",
-    "node-downloader-helper": "^1.0.12",
     "node-fetch": "^2.6.0",
     "perfect-logger": "^2.0.1",
     "pkg": "^4.4.7",
-    "request-promise-native": "^1.0.8",
     "shell-exec": "^1.0.2",
     "shelljs": "^0.8.4"
   },
