@@ -13,10 +13,10 @@ chmod 0777 ./release/**/miwatchkleaner-* && \
 chmod +x ./release/**/adb && \
 chmod +x ./release/**/miwatchkleaner-* && \
 cd release/MacOS/ && \
-tar -pcvzf miwatchkleaner.$buildNum-macos.tar.gz adb data/ miwatchkleaner-macos-x64 && \
+tar -pcvzf miwatchkleaner.$buildNum-macos.tar.gz adb data/ my_apk/ miwatchkleaner-macos-x64 && \
 cd .. && \
 cd Linux/ && \
-tar -pcvzf miwatchkleaner.$buildNum-Linux.tar.gz adb data/ miwatchkleaner-linux-x64 && \
+tar -pcvzf miwatchkleaner.$buildNum-Linux.tar.gz adb data/ my_apk/ miwatchkleaner-linux-x64 && \
 cd .. && \
 cd Windows/ && \
-zip -r miwatchkleaner.$buildNum-win.zip adb.exe AdbWinApi.dll AdbWinUsbApi.dll data/ miwatchkleaner-win-x86.exe
+zip -r miwatchkleaner.$buildNum-win.zip adb.exe AdbWinApi.dll AdbWinUsbApi.dll data/ my_apk/ miwatchkleaner-win-x86.exe
