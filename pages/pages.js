@@ -73,7 +73,8 @@ module.exports = {
         for (let element of value.removeAppsList) {
             for (let element2 of compatibleApps) {
                 if (element === element2.name) {
-                    await common.downloadFile(element2.url, './data/apps/' + element2.name + '.apk')
+                    newName = element.replace(/\s/g, '');
+                    await common.downloadFile(element2.url, './data/apps/' + newName + '.apk')
                 }
             }
         }
@@ -238,7 +239,8 @@ module.exports = {
             if (element.Klean === "X") {
                 try {
                     logger.info('Downloading Latest ' + element.name + ' Complete')
-                    await common.downloadFile(element.url, './data/apps/' + element.name + '.apk')
+                    newName = element.name.replace(/\s/g, '');
+                    await common.downloadFile(element.url, './data/apps/' + newName + '.apk')
                     logger.info('Downloading Latest ' + element.name + ' Complete')
                 } catch (error) {
                     logger.info('Downloading Latest ' + element.name + ' FAILED')
