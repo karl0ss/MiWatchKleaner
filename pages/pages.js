@@ -75,7 +75,7 @@ module.exports = {
         const compatibleApps = await common.getCompatibleAppsList()
         const value = await inquirer.compatibleApps();
 
-        await shell.rm('-rf', './data/apps/*.apk');
+        await common.clearApkFolder()
 
         for (let element of value.removeAppsList) {
             for (let element2 of compatibleApps) {
@@ -247,7 +247,7 @@ module.exports = {
         logger.info("Remove Complete")
         logger.info("Compatible Apps")
 
-        await shell.rm('-rf', './data/apps/*.apk');
+        await common.clearApkFolder()
 
         const compatibleApps = await common.getCompatibleAppsList()
 
