@@ -39,5 +39,8 @@
     "failed": "Failed",
     "restoring-apps-complete": "Restoring Apps Complete",
     "batch-install-apps-complete": "Batch Install Apps Complete",
-    "connect-to-watch": "Connect to watch"
+    "connect-to-watch": "Connect to watch",
+    "connected-via-usb": "Connected via USB",
+    "connected-via-wifi": "Connected via Wifi",
+    "not-connected": "Not Connected"
 }
