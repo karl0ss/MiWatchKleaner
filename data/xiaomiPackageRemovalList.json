@@ -1,7 +1,6 @@
 {
   "apps": [
       "com.android.messaging",
-      "com.eg.android.AlipayGphone",
       "com.google.android.clockwork.flashlight",
       "com.google.android.clockwork.gestures.tutorial",
       "com.google.android.clockwork.lesetup",
@@ -11,7 +10,6 @@
       "com.google.android.wearable.localedition.overlay.cmiit",
       "com.google.android.wearable.overlay.common.baiji",
       "com.google.android.wearable.overlay.helium.baiji",
-      "com.google.android.wearable.overlay.home.baiji",
       "com.google.android.wearable.overlay.home.baiji",
       "com.google.android.wearable.overlay.home.baiji.tiles",
       "com.gotokeep.keep",

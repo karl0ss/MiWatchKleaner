@@ -22,6 +22,7 @@
     "remove_installed_apps_failed": "Remove Installed Apps Failed",
     "removing": "Removing",
     "installing": "Installing",
+    "restoring": "Restoring",
     "remove_selected_user_apps": "Removed Selected User Apps",
     "install_compatible_apps_header": "Install Compatible Apps",
     "simple_weather_activated_on_watch": "simpleWeather Activated On Watch",
