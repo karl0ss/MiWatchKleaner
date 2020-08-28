@@ -6,3 +6,4 @@ data/*.log
 logger.lock
 null.log
 .gitignore
+my_apk/*.apk
