@@ -188,12 +188,16 @@ module.exports = {
         } else {
             await shellExec(adbRun + ' kill-server')
             const value = await inquirer.connectWifi();
-            const miWatchIpaddress = value.connectWifi
-            shellExec(adbRun + ' connect ' + miWatchIpaddress).then(async function (result) {
+            await shellExec(adbRun + ' kill-server').then(async function (result) {
+                logger.info('Restarting ADB')
+                logger.info(result.stdout)
+            })
+            await shellExec(adbRun + ' connect ' + value.connectWifi).then(async function (result) {
                 logger.info("Connect Wifi Result " + result.stdout)
                 if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
                     console.log(chalk.green('MiWatch Connected'))
-                    files.writeIpAddress(miWatchIpaddress)
+                    globalVariables.localUSB = ""
+                    globalVariables.miWatchIpaddress = value.connectWifi
                     await common.pause(3000)
                     logger.info("Connect Wifi Complete")
                     module.exports.mainMenu()
@@ -206,7 +210,7 @@ module.exports = {
                     await common.pause(2000)
                     console.log(chalk.white('Try Again'))
                     await common.pause(1000)
-                    module.exports.connectWifi()
+                    module.exports.connectWatch()
                 }
             }).catch()
         }
