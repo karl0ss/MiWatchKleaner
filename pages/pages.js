@@ -6,7 +6,8 @@ const files = require('../lib/files')
 const getFilesIn = require('get-files-in')
 let logger = require('perfect-logger');
 const globalVariables = require('../lib/globalVars');
-
+const Language = require("@shypes/language-translator");
+const adb = require('../lib/adb');
 
 logger.info(process.platform + " detected")
 if (process.platform === 'win32' || process.platform === 'win64') {
@@ -23,52 +24,26 @@ logger.initialize('RunTIme', {
 
 module.exports = {
     removeCompatibleApps: async () => {
-        let installedAppList
-        common.header('Remove Installed Apps')
-        logger.info('Remove Installed Apps')
-        await shellExec(adbRun + ' shell pm list packages -3').then(async function (result) {
-            logger.info('Packages recieved from watch')
-            if (result.stderr.includes('error')) {
-                logger.info(result.stderr)
-                console.log(chalk.red('Device not authorised'))
-                common.pause(3000)
-                await shellExec(adbRun + ' kill-server').then(async function (result) {
-                    logger.info('Restarting ADB')
-                    logger.info(result.stdout)
-                    console.log('Please reconnect to watch')
-                    common.pause(3000)
-                    logger.info('Remove Installed Apps Failed')
-                    module.exports.mainMenu()
-                })
-            } else {
-                if (process.platform === 'win32' || process.platform === 'win64') {
-                    installedAppList = result.stdout.split('\r\n'); // split string on comma space
-                    installedAppList.splice(-1, 1)
-                } else {
-                    installedAppList = result.stdout.split('\n'); // split string on comma space
-                    installedAppList.splice(-1, 1)
-                }
-                const value = await inquirer.installedApps(installedAppList);
+        common.header(await Language.get('remove_installed_apps_header'))
+        logger.info(await Language.get('remove_installed_apps_header'))
 
-                for (let element of value.removeAppsList) {
-                    console.log('Removing ' + element)
-                    logger.info('Removing ' + element)
-                    const package = element.substring(8)
-                    await shellExec(adbRun + ' uninstall ' + package).then(async function (result) {
-                        console.log(element + ' - ' + result.stdout);
-                        logger.info(element + ' - ' + result.stdout);
-                    });
-                }
-                console.log(chalk.green('Removed Selected User Apps'))
-                logger.info('Removed Selected User Apps')
-                await common.pause(2000)
-                module.exports.mainMenu()
-            }
-        })
+        value = await adb.getInstalledPacakges()
+
+        for (let element of value.removeAppsList) {
+          console.log(await Language.get('removing') + ' ' + element)
+          logger.info(await Language.get('removing') + ' ' + element)
+          const package = element.substring(8)
+          await adb.removeApk(package)
+        }
+        console.log(chalk.green(await Language.get('remove_selected_user_apps')))
+        logger.info(await Language.get('remove_selected_user_apps'))
+        await common.pause(2000)
+        module.exports.mainMenu()
+      
     },
     compatibleApps: async () => {
-        logger.info("Compatible Apps")
-        common.header('Install Compatible Apps')
+        logger.info(await Language.get('install_compatible_apps_header'))
+        common.header(await Language.get('install_compatible_apps_header'))
 
         const compatibleApps = await common.getCompatibleAppsList()
         const value = await inquirer.compatibleApps();
@@ -84,45 +59,15 @@ module.exports = {
             }
         }
 
-        const apkList = await getFilesIn('./data/apps', matchFiletypes = ['apk'], checkSubDirectories = false)
+        const apkList = await adb.getListOfAPk()
 
         for (let element of apkList) {
-            console.log('Installing ' + element)
-            logger.info('Installing ' + element)
-            await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
-                if (result.stderr != '') {
-                    logger.info('Error ' + result.stderr);
-                    console.log(chalk.redBright('Error - Device not authorised'));
-                }
-                console.log(element + ' - ' + result.stdout);
-                logger.info(element + ' - ' + result.stdout);
-
-                if (element === "data\\apps\\simpleweather_base.apk") {
-                    await common.downloadFile('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.armeabi_v7a.apk', './data/apps/simpleweather_split_config.armeabi_v7a.apk')
-                    await common.downloadFile('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.xhdpi.apk', './data/apps/simpleweather_split_config.xhdpi.apk')
-                    await shellExec(adbRun + ' install-multiple "data\\apps\\simpleweather_base.apk" "data\\apps\\simpleweather_split_config.armeabi_v7a.apk" "data\\apps\\simpleweather_split_config.xhdpi.apk"').then(function (result) {
-                        console.log(result)
-                        console.log('simpleWeather Activated On Watch');
-                        logger.info('simpleWeather Activated On Watch');
-                    })
-                }
-                if (element === "data\\apps\\MoreLocale.apk") {
-                    await shellExec(adbRun + ' shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                        console.log('moreLocale Activated On Watch');
-                        logger.info('moreLocale Activated On Watch');
-                    })
-                }
-                if (element === "data\\apps\\com.alberto.locale.apk") {
-                    await shellExec(adbRun + ' shell pm grant com.alberto.locale android.permission.CHANGE_CONFIGURATION && ' + adbRun + ' shell am start -n com.alberto.locale/com.alberto.locale.MainActivity && ' + adbRun + ' shell pm grant com.alberto.locale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                        console.log(result)
-                        console.log('Alberto Locale Activated On Watch');
-                        logger.info('Alberto Locale Activated On Watch');
-                    });
-                }
-            });
+            console.log(await Language.get('installing') + ' ' + element)
+            logger.info(await Language.get('installing') + ' ' + element)
+            await adb.installApk(element)
         }
-        console.log(chalk.green('Compatible Apps Installed'))
-        logger.info('Compatible Apps Installed')
+        console.log(chalk.green(await Language.get('compatible_apps_installed')))
+        logger.info(await Language.get('compatible_apps_installed'))
         await common.pause(2000)
         module.exports.mainMenu()
     },
