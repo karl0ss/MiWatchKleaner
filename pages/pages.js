@@ -5,6 +5,7 @@ const files = require('../lib/files')
 const logger = require('perfect-logger');
 const Language = require("@shypes/language-translator");
 const adb = require('../lib/adb');
+const { dualLog } = require('../lib/common');
 
 logger.info(process.platform + " detected")
 if (process.platform === 'win32' || process.platform === 'win64') {
@@ -32,14 +33,14 @@ module.exports = {
         await common.pause(2000)
         common.log('removal-complete')
         common.log('compatible-apps')
-        
+
         await common.clearApkFolder()
 
         const compatibleApps = await common.getCompatibleAppsList()
-        
+
         console.log(chalk.whiteBright('----------'))
         common.print('downloading-compatible-apps', 'whiteBright')
-        
+
         for (const package of compatibleApps) {
             if (package.Klean === "X") {
                 try {
@@ -65,8 +66,8 @@ module.exports = {
     },
 
     removeXiaomiApps: async () => {
-        common.header(await Language.get('main-menu-item-2'))
-        common.log('main-menu-item-2', 'green')
+        common.header('main-menu-item-2')
+        common.log('main-menu-item-2')
         const value = await inquirer.removeAppsList();
         for (let package of value.removeAppsList) {
             await adb.removeXiaomiApk(package)
@@ -77,22 +78,20 @@ module.exports = {
     },
 
     restoreXiaomiApps: async () => {
-        logger.info("Restore Apps")
-        common.header('Restore Apps')
+        common.header('main-menu-item-3')
+        common.log('main-menu-item-3')
         const value = await inquirer.removeAppsList();
         for (let package of value.removeAppsList) {
             await adb.restoreXiaomiApk(package)
         }
-        console.log(chalk.green('Restore Complete'))
+        common.dualLog('restoring-apps-complete', 'green')
         await common.pause(2000)
-        logger.info("Restore Apps Complete")
         module.exports.mainMenu()
     },
 
     installCompatibleApps: async () => {
-        logger.info(await Language.get('install-compatible-apps-header', 'en'))
-        common.header(await Language.get('install-compatible-apps-header'))
-
+        common.header('main-menu-item-4')
+        common.log('main-menu-item-4')
         const compatibleApps = await common.getCompatibleAppsList()
         const value = await inquirer.compatibleApps();
 
@@ -110,49 +109,45 @@ module.exports = {
         const apkList = await files.getListOfAPk('./data/apps')
 
         for (let package of apkList) {
-            console.log(await Language.get('installing') + ' ' + package)
-            logger.info(await Language.get('installing', 'en') + ' ' + package)
+            common.dualLog('installing', 'whiteBright')
             await adb.installApk(package)
         }
-        console.log(chalk.green(await Language.get('compatible-apps-installed')))
-        logger.info(await Language.get('compatible-apps-installed', 'en'))
+        common.dualLog('compatible-apps-installed', 'green')
         await common.pause(2000)
         module.exports.mainMenu()
     },
 
     restoreAnyApp: async () => {
-        logger.info("Restore Any App")
-        common.header('Restore Any App')
+        common.header('main-menu-item-5')
+        common.log('main-menu-item-5')
         const value = await inquirer.restoreAnyApp();
         await adb.restoreAnyApk(value)
-        console.log(chalk.green('Restore Complete'))
+        common.dualLog('restoring-apps-complete', 'green')
         await common.pause(2000)
-        logger.info("App Restore Complete")
         module.exports.mainMenu()
     },
 
-    batchInstallApks: async () => {
-        logger.info("Batch Install Apks")
-        common.header('Batch Install Apks')
+    batchInstallApps: async () => {
+        common.header('main-menu-item-6')
+        common.log('main-menu-item-6')
 
         let apkList = await files.getListOfAPk('./my-apk/')
         await files.renameLocalApk(apkList)
         apkList = await files.getListOfAPk('./my-apk/')
 
         for (let element of apkList) {
-            console.log('Installing ' + element)
-            logger.info('Installing ' + element)
+            console.log(await Language.get('installing') + ' ' + element)
+            logger.info(await Language.get('installing') + ' ' + element)
             await adb.installApk(element)
         }
-        console.log(chalk.green('Batch Install Apks Completed'))
-        logger.info('Batch Install Apks Completed')
+        common.dualLog('batch-install-apps-complete', 'green')
         await common.pause(2000)
         module.exports.mainMenu()
     },
 
     batchRemoveInstalledApps: async () => {
-        common.header(await Language.get('header-remove-installed-apps'))
-        logger.info(await Language.get('header-remove-installed-apps', 'en'))
+        common.header('main-menu-item-7')
+        common.log('main-menu-item-7')
 
         value = await adb.getInstalledPacakges()
 
@@ -162,16 +157,14 @@ module.exports = {
             const package = element.substring(8)
             await adb.removeApk(package)
         }
-        console.log(chalk.green(await Language.get('remove-selected-user-apps')))
-        logger.info(await Language.get('remove-selected-user-apps', 'en'))
+        common.dualLog('remove-selected-user-apps', 'green')
         await common.pause(2000)
         module.exports.mainMenu()
-
     },
 
     connectWatch: async () => {
-        logger.info("Connect to watch")
-        common.header('Connect to watch')
+        common.header('connect-to-watch')
+        common.log('connect-to-watch')
         const value = await inquirer.connectionType()
         connected = await adb.watchConnection(value)
         if (connected != true) {
@@ -200,8 +193,8 @@ module.exports = {
             case 'restore any app':
                 module.exports.restoreAnyApp()
                 break;
-            case 'batch install apks':
-                module.exports.batchInstallApks()
+            case 'batch install apps':
+                module.exports.batchInstallApps()
                 break;
             case 'batch remove installed apps':
                 module.exports.batchRemoveInstalledApps()

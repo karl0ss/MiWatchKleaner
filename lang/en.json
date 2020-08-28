@@ -5,7 +5,7 @@
     "main-menu-item-3": "Restore Xiaomi Apps",
     "main-menu-item-4": "Install Compatible Apps",
     "main-menu-item-5": "Restore ANY app",
-    "main-menu-item-6": "Batch Install APKs",
+    "main-menu-item-6": "Batch Install Apps",
     "main-menu-item-7": "Batch Remove Installed Apps",
     "main-menu-item-8": "Quit",
     "connection-type-message": "How do you want to connect?",
@@ -36,5 +36,8 @@
     "installing-apps": "Installing Apps",
     "downloading-latest": "Downloading Latest",
     "complete": "Complete",
-    "failed": "Failed"
+    "failed": "Failed",
+    "restoring-apps-complete": "Restoring Apps Complete",
+    "batch-install-apps-complete": "Batch Install Apps Complete",
+    "connect-to-watch": "Connect to watch"
 }
