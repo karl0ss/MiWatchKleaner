@@ -1,12 +1,11 @@
 const chalk = require('chalk');
 const common = require('../lib/common');
 const inquirer = require('../lib/inquirer');
-const shellExec = require('shell-exec')
 const files = require('../lib/files')
-const getFilesIn = require('get-files-in')
-let logger = require('perfect-logger');
+const logger = require('perfect-logger');
+const Language = require("@shypes/language-translator");
 const globalVariables = require('../lib/globalVars');
-
+const adb = require('../lib/adb');
 
 logger.info(process.platform + " detected")
 if (process.platform === 'win32' || process.platform === 'win64') {
@@ -22,54 +21,77 @@ logger.initialize('RunTIme', {
 });
 
 module.exports = {
-    removeCompatibleApps: async () => {
-        let installedAppList
-        common.header('Remove Installed Apps')
-        logger.info('Remove Installed Apps')
-        await shellExec(adbRun + ' shell pm list packages -3').then(async function (result) {
-            logger.info('Packages recieved from watch')
-            if (result.stderr.includes('error')) {
-                logger.info(result.stderr)
-                console.log(chalk.red('Device not authorised'))
-                common.pause(3000)
-                await shellExec(adbRun + ' kill-server').then(async function (result) {
-                    logger.info('Restarting ADB')
-                    logger.info(result.stdout)
-                    console.log('Please reconnect to watch')
-                    common.pause(3000)
-                    logger.info('Remove Installed Apps Failed')
-                    module.exports.mainMenu()
-                })
-            } else {
-                if (process.platform === 'win32' || process.platform === 'win64') {
-                    installedAppList = result.stdout.split('\r\n'); // split string on comma space
-                    installedAppList.splice(-1, 1)
-                } else {
-                    installedAppList = result.stdout.split('\n'); // split string on comma space
-                    installedAppList.splice(-1, 1)
-                }
-                const value = await inquirer.installedApps(installedAppList);
+    oneClick: async () => {
+        common.log('main-menu-item-1')
+        common.header('main-menu-item-1')
+        common.print('remove-xiaomi-apps', 'whiteBright')
+        const removalPackagesList = files.loadPackageList()
+        for (let package of removalPackagesList.apps) {
+            await adb.removeXiaomiApk(package)
+        }
+        common.print('removal-complete', 'green')
+        await common.pause(2000)
+        common.log('removal-complete')
+        common.log('compatible-apps')
 
-                for (let element of value.removeAppsList) {
-                    console.log('Removing ' + element)
-                    logger.info('Removing ' + element)
-                    const package = element.substring(8)
-                    await shellExec(adbRun + ' uninstall ' + package).then(async function (result) {
-                        console.log(element + ' - ' + result.stdout);
-                        logger.info(element + ' - ' + result.stdout);
-                    });
+        await common.clearApkFolder()
+
+        const compatibleApps = await common.getCompatibleAppsList()
+
+        console.log(chalk.whiteBright('----------'))
+        common.print('downloading-compatible-apps', 'whiteBright')
+
+        for (const package of compatibleApps) {
+            if (package.Klean === "X") {
+                try {
+                    newPacakgeName = package.name.replace(/\s/g, '');
+                    await common.downloadFile(package.url, './data/apps/' + newPacakgeName + '.apk')
+                    logger.info(await Language.get('downloading-latest', 'en') + ' ' + package.name + ' ' + chalk.green(await Language.get('complete', 'en')))
+                    console.log(await Language.get('downloading-latest') + ' ' + package.name + ' ' + await Language.get('complete'))
+                } catch (error) {
+                    logger.info(await Language.get('downloading-latest', 'en') + ' ' + package.name + ' ' + chalk.red(await Language.get('failed', 'en')))
+                    console.log(await Language.get('downloading-latest') + ' ' + package.name + ' ' + await Language.get('failed'))
                 }
-                console.log(chalk.green('Removed Selected User Apps'))
-                logger.info('Removed Selected User Apps')
-                await common.pause(2000)
-                module.exports.mainMenu()
             }
-        })
+        }
+        const apkList = await files.getListOfAPk('./data/apps')
+        console.log(chalk.whiteBright('----------'))
+        common.print('installing-apps', 'whiteBright')
+        for (let element of apkList) {
+            await adb.installApk(element)
+        }
+        common.dualLog('compatible-apps-installed', 'green')
+        await common.pause(2000)
+        module.exports.mainMenu()
     },
-    compatibleApps: async () => {
-        logger.info("Compatible Apps")
-        common.header('Install Compatible Apps')
 
+    removeXiaomiApps: async () => {
+        common.header('main-menu-item-2')
+        common.log('main-menu-item-2')
+        const value = await inquirer.removeAppsList();
+        for (let package of value.removeAppsList) {
+            await adb.removeXiaomiApk(package)
+        }
+        common.dualLog('removal-complete', 'green')
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
+
+    restoreXiaomiApps: async () => {
+        common.header('main-menu-item-3')
+        common.log('main-menu-item-3')
+        const value = await inquirer.removeAppsList();
+        for (let package of value.removeAppsList) {
+            await adb.restoreXiaomiApk(package)
+        }
+        common.dualLog('restoring-apps-complete', 'green')
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
+
+    installCompatibleApps: async () => {
+        common.header('main-menu-item-4')
+        common.log('main-menu-item-4')
         const compatibleApps = await common.getCompatibleAppsList()
         const value = await inquirer.compatibleApps();
 
@@ -84,277 +106,131 @@ module.exports = {
             }
         }
 
-        const apkList = await getFilesIn('./data/apps', matchFiletypes = ['apk'], checkSubDirectories = false)
+        const apkList = await files.getListOfAPk('./data/apps')
 
-        for (let element of apkList) {
-            console.log('Installing ' + element)
-            logger.info('Installing ' + element)
-            await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
-                if (result.stderr != '') {
-                    logger.info('Error ' + result.stderr);
-                    console.log(chalk.redBright('Error - Device not authorised'));
-                }
-                console.log(element + ' - ' + result.stdout);
-                logger.info(element + ' - ' + result.stdout);
-
-                if (element === "data\\apps\\simpleweather_base.apk") {
-                    await common.downloadFile('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.armeabi_v7a.apk', './data/apps/simpleweather_split_config.armeabi_v7a.apk')
-                    await common.downloadFile('http://kithub.cf/Karl/MiWatchKleaner-APKs/raw/master/Others/simpleweather_split_config.xhdpi.apk', './data/apps/simpleweather_split_config.xhdpi.apk')
-                    await shellExec(adbRun + ' install-multiple "data\\apps\\simpleweather_base.apk" "data\\apps\\simpleweather_split_config.armeabi_v7a.apk" "data\\apps\\simpleweather_split_config.xhdpi.apk"').then(function (result) {
-                        console.log(result)
-                        console.log('simpleWeather Activated On Watch');
-                        logger.info('simpleWeather Activated On Watch');
-                    })
-                }
-                if (element === "data\\apps\\MoreLocale.apk") {
-                    await shellExec(adbRun + ' shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                        console.log('moreLocale Activated On Watch');
-                        logger.info('moreLocale Activated On Watch');
-                    })
-                }
-                if (element === "data\\apps\\com.alberto.locale.apk") {
-                    await shellExec(adbRun + ' shell pm grant com.alberto.locale android.permission.CHANGE_CONFIGURATION && ' + adbRun + ' shell am start -n com.alberto.locale/com.alberto.locale.MainActivity && ' + adbRun + ' shell pm grant com.alberto.locale android.permission.CHANGE_CONFIGURATION').then(function (result) {
-                        console.log(result)
-                        console.log('Alberto Locale Activated On Watch');
-                        logger.info('Alberto Locale Activated On Watch');
-                    });
-                }
-            });
+        for (let package of apkList) {
+            common.dualLog('installing', 'whiteBright')
+            await adb.installApk(package)
         }
-        console.log(chalk.green('Compatible Apps Installed'))
-        logger.info('Compatible Apps Installed')
+        common.dualLog('compatible-apps-installed', 'green')
         await common.pause(2000)
         module.exports.mainMenu()
     },
-    removeApps: async () => {
-        logger.info("Remove Apps")
-        common.header('Remove Apps')
-        const value = await inquirer.removeAppsList();
-        for (let element of value.removeAppsList) {
-            // await shellExec(adbRun + ' shell pm  disable-user --0 ' + element).then(function (result) {
-            await shellExec(adbRun + ' shell pm uninstall -k --user 0 ' + element).then(function (result) {
-                if (result.stderr != '') {
-                    logger.info('Error ' + result.stderr);
-                    console.log(chalk.redBright('Error - Device not authorised'));
-                } else {
-                    logger.info('Removing ' + element + ' - ' + result.stdout);
-                    console.log('Removing ' + element + ' - ' + result.stdout);
-                }
-            });
-        }
-        console.log(chalk.green('Removal Complete'))
-        await common.pause(2000)
-        logger.info("Remove Complete")
-        module.exports.mainMenu()
-    },
-    restoreApps: async () => {
-        logger.info("Restore Apps")
-        common.header('Restore Apps')
-        const value = await inquirer.removeAppsList();
-        for (let element of value.removeAppsList) {
-            await shellExec(adbRun + ' shell cmd package install-existing ' + element).then(function (result) {
-                if (result.stderr != '') {
-                    logger.info('Error ' + result.stderr);
-                    console.log(chalk.redBright('Error - Device not authorised'));
-                } else {
-                    logger.info('Restoring ' + element + ' - ' + result.stdout);
-                    console.log('Restoring ' + element + ' - ' + result.stdout);
-                }
-            });
-        }
-        console.log(chalk.green('Restore Complete'))
-        await common.pause(2000)
-        logger.info("Restore Apps Complete")
-        module.exports.mainMenu()
-    },
-    connectWatch: async () => {
-        logger.info("Connect to watch")
-        common.header('Connect to watch')
-        const value = await inquirer.connectionType()
-        if (value.connection === "usb") {
-            await shellExec(adbRun + ' kill-server').then(async function (result) {
-                logger.info('Restarting ADB')
-                logger.info(result.stdout)
-            })
-            await shellExec(adbRun + ' devices').then(async function (result) {
-                console.log(result.stdout)
-                if (result.stdout.includes('device', 15)) {
-                    console.log(chalk.green('MiWatch Connected via USB'))
-                    await common.pause(3000)
-                    logger.info("MiWatch connected")
-                    globalVariables.localUSB = "X"
-                    module.exports.mainMenu()
-                } else {
-                    console.log(chalk.red('MiWatch not found'))
-                    logger.info("MiWatch not found")
-                    await common.pause(2000)
-                    console.log(chalk.white('Try Again'))
-                    await common.pause(1000)
-                    module.exports.connectWatch()
-                }
-            })
-        }
-        if (value.connection === "wifi") {
-            const value = await inquirer.connectWifi();
-            await shellExec(adbRun + ' kill-server').then(async function (result) {
-                logger.info('Restarting ADB')
-                logger.info(result.stdout)
-            })
-            await shellExec(adbRun + ' connect ' + value.connectWifi).then(async function (result) {
-                logger.info("Connect Wifi Result " + result.stdout)
-                if (result.stdout.includes('already connected') || result.stdout.includes('connected to ')) {
-                    console.log(chalk.green('MiWatch Connected'))
-                    globalVariables.localUSB = ""
-                    globalVariables.miWatchIpaddress = value.connectWifi
-                    await common.pause(3000)
-                    logger.info("Connect Wifi Complete")
-                    module.exports.mainMenu()
-                } else {
-                    if (result.stdout.includes('failed to authenticate')) {
-                        console.log(chalk.redBright('MiWatch not authenticated'))
-                        logger.info('MiWatch not authenticated')
-                    } else {
-                        console.log(chalk.red(result.stdout))
-                        logger.info(result.stdout)
-                    }
-                    await common.pause(2000)
-                    console.log(chalk.white('Try Again'))
-                    await common.pause(1000)
-                    module.exports.connectWatch()
-                }
-            }).catch()
-        }
-    },
-    oneClick: async () => {
-        logger.info("1-Click Karl0ss Klean")
-        common.header('1-Click Karl0ss Klean')
-        const removalPackagesList = files.loadPackageList()
-        for (let element of removalPackagesList.apps) {
-            await shellExec(adbRun + ' shell pm uninstall -k --user 0 ' + element).then(function (result) {
-                if (result.stderr != '') {
-                    logger.info('Error ' + result.stderr);
-                    console.log(chalk.redBright('Error - Device not authorised'));
-                } else {
-                    logger.info('Removing ' + element + ' - ' + result.stdout);
-                    console.log('Removing ' + element + ' - ' + result.stdout);
-                }
-            });
-        }
-        console.log(chalk.green('Removal Complete'))
-        await common.pause(2000)
-        logger.info("Remove Complete")
-        logger.info("Compatible Apps")
 
-        await common.clearApkFolder()
-
-        const compatibleApps = await common.getCompatibleAppsList()
-
-        for (const element of compatibleApps) {
-            if (element.Klean === "X") {
-                try {
-                    logger.info('Downloading Latest ' + element.name + ' Complete')
-                    newName = element.name.replace(/\s/g, '');
-                    await common.downloadFile(element.url, './data/apps/' + newName + '.apk')
-                    logger.info('Downloading Latest ' + element.name + ' Complete')
-                } catch (error) {
-                    logger.info('Downloading Latest ' + element.name + ' FAILED')
-                }
-            }
-        }
-        const apkList = await getFilesIn('./data/apps', matchFiletypes = ['apk'], checkSubDirectories = false)
-
-        for (let element of apkList) {
-            console.log('Installing ' + element)
-            logger.info('Installing ' + element)
-            await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
-                if (result.stderr != '') {
-                    logger.info('Error ' + result.stderr);
-                    console.log(chalk.redBright('Error - Device not authorised'));
-                }
-                console.log(element + ' - ' + result.stdout);
-                logger.info(element + ' - ' + result.stdout);
-
-            });
-        }
-        console.log(chalk.green('Compatible Apps Installed'))
-        logger.info('Compatible Apps Installed')
-        await common.pause(2000)
-        module.exports.mainMenu()
-    },
     restoreAnyApp: async () => {
-        logger.info("Restore Any App")
-        common.header('Restore Any App')
+        common.header('main-menu-item-5')
+        common.log('main-menu-item-5')
         const value = await inquirer.restoreAnyApp();
-        await shellExec(adbRun + ' shell cmd package install-existing ' + value.restoreAnyApp).then(function (result) {
-            if (result.stderr != '') {
-                logger.info('Error ' + result.stderr);
-                console.log(chalk.redBright('Error - Device not authorised'));
-            } else {
-                logger.info('Restoring ' + value.restoreAnyApp + ' - ' + result.stdout);
-                console.log('Restoring ' + value.restoreAnyApp + ' - ' + result.stdout);
-            }
-        });
-        console.log(chalk.green('Restore Complete'))
+        await adb.restoreAnyApk(value)
+        common.dualLog('restoring-apps-complete', 'green')
         await common.pause(2000)
-        logger.info("App Restore Complete")
         module.exports.mainMenu()
     },
-    batchInstallApks: async () => {
-        logger.info("Batch Install Apks")
-        common.header('Batch Install Apks')
-        
-        let apkList = await getFilesIn('./my_apk/', matchFiletypes = ['apk'], checkSubDirectories = false)
 
+    removeAnyApp: async () => {
+        common.header('main-menu-item-6')
+        common.log('main-menu-item-6')
+        const value = await inquirer.removeAnyApp();
+        await adb.restoreAnyApk(value)
+        common.dualLog('removing-apps-complete', 'green')
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
+
+    batchInstallApps: async () => {
+        common.header('main-menu-item-7')
+        common.log('main-menu-item-7')
+
+        let apkList = await files.getListOfAPk('./my-apk/')
         await files.renameLocalApk(apkList)
-
-        apkList = await getFilesIn('./my_apk/', matchFiletypes = ['apk'], checkSubDirectories = false)
+        apkList = await files.getListOfAPk('./my-apk/')
 
         for (let element of apkList) {
-            console.log('Installing ' + element)
-            logger.info('Installing ' + element)
-            await shellExec(adbRun + ' install -r ' + element).then(async function (result) {
-                if (result.stderr != '') {
-                    logger.info('Error ' + result.stderr);
-                    console.log(chalk.redBright(result.stderr));
-                }
-                console.log(element + ' - ' + result.stdout);
-                logger.info(element + ' - ' + result.stdout);
-            });
+            console.log(await Language.get('installing') + ' ' + element)
+            logger.info(await Language.get('installing') + ' ' + element)
+            await adb.installApk(element)
         }
-        console.log(chalk.green('Batch Install Apks Completed'))
-        logger.info('Batch Install Apks Completed')
+        common.dualLog('batch-install-apps-complete', 'green')
         await common.pause(2000)
         module.exports.mainMenu()
     },
+
+    batchRemoveInstalledApps: async () => {
+        common.header('main-menu-item-8')
+        common.log('main-menu-item-8')
+
+        value = await adb.getInstalledPacakges()
+
+        for (let element of value.removeAppsList) {
+            console.log(await Language.get('removing') + ' ' + element)
+            logger.info(await Language.get('removing') + ' ' + element)
+            const package = element.substring(8)
+            await adb.removeApk(package)
+        }
+        common.dualLog('remove-selected-user-apps', 'green')
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
+
+    connectWatch: async () => {
+        common.header('connect-to-watch')
+        common.log('connect-to-watch')
+        const value = await inquirer.connectionType()
+        connected = await adb.watchConnection(value)
+        if (connected != true) {
+            module.exports.connectWatch()
+        } else {
+            module.exports.mainMenu()
+        }
+    },
+
+    selectLanguage: async () => {
+        common.header('Select Language')
+        common.log('Select Language')
+        const v = await inquirer.LanguageSelect()
+        globalVariables.language = v.selection
+        module.exports.connectWatch()
+    },
+
     mainMenu: async () => {
         common.header('Main Menu')
         const mainMenuSelection = await inquirer.mainMenu();
+        menu_1 = await Language.get('main-menu-item-1')
+        menu_2 = await Language.get('main-menu-item-2')
+        menu_3 = await Language.get('main-menu-item-3')
+        menu_4 = await Language.get('main-menu-item-4')
+        menu_5 = await Language.get('main-menu-item-5')
+        menu_6 = await Language.get('main-menu-item-6')
+        menu_7 = await Language.get('main-menu-item-7')
+        menu_8 = await Language.get('main-menu-item-8')
+        menu_9 = await Language.get('main-menu-item-9')
+
         switch (mainMenuSelection.mainMenu) {
-            case 'connect to miwatch':
-                module.exports.connectWatch()
-                break;
-            case '1-click karl0ss klean':
+            case menu_1.toLowerCase():
                 module.exports.oneClick()
                 break;
-            case 'remove xiaomi apps':
-                module.exports.removeApps()
+            case menu_2.toLowerCase():
+                module.exports.removeXiaomiApps()
                 break;
-            case 'restore xiaomi apps':
-                module.exports.restoreApps()
+            case menu_3.toLowerCase():
+                module.exports.restoreXiaomiApps()
                 break;
-            case 'install compatible apps':
-                module.exports.compatibleApps()
+            case menu_4.toLowerCase():
+                module.exports.installCompatibleApps()
                 break;
-            case 'batch remove installed apps':
-                module.exports.removeCompatibleApps()
-                break;
-            case 'restore any app':
+            case menu_5.toLowerCase():
                 module.exports.restoreAnyApp()
                 break;
-            case 'batch install apks':
-                module.exports.batchInstallApks()
+            case menu_6.toLowerCase():
+                module.exports.removeAnyApp()
                 break;
-            case 'quit':
+            case menu_7.toLowerCase():
+                module.exports.batchInstallApps()
+                break;
+            case menu_8.toLowerCase():
+                module.exports.batchRemoveInstalledApps()
+                break;
+            case menu_9.toLowerCase():
                 break;
             default:
             // code block
