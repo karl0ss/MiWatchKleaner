@@ -42,5 +42,11 @@
     "connect-to-watch": "Conectarse al reloj",
     "connected-via-usb": "Conectado mediante USB",
     "connected-via-wifi": "Conectado a través de Wifi",
-    "not-connected": "No conectado"
+    "not-connected": "No conectado",
+    "error-device-not-authorised": "Error - Dispositivo no autorizado",
+    "not-found": "No encontrado",
+    "try-again": "Inténtalo de nuevo",
+    "connect-wifi-complete": "Conectar Wifi Completo",
+    "not-authenticated": "No autenticado",
+    "error": "Error"
 }

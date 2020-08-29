@@ -42,5 +42,12 @@
     "connect-to-watch": "Connect to watch",
     "connected-via-usb": "Connected via USB",
     "connected-via-wifi": "Connected via Wifi",
-    "not-connected": "Not Connected"
+    "connected": "Connected",
+    "not-connected": "Not Connected",
+    "error-device-not-authorised": "Error - Device not authorised",
+    "not-found": "Not Found",
+    "try-again": "Try Again",
+    "connect-wifi-complete": "Connect Wifi Complete",
+    "not-authenticated": "Not Authenticated",
+    "error": "Error"
 }
