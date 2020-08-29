@@ -126,9 +126,19 @@ module.exports = {
         module.exports.mainMenu()
     },
 
-    batchInstallApps: async () => {
+    removeAnyApp: async () => {
         common.header('main-menu-item-6')
         common.log('main-menu-item-6')
+        const value = await inquirer.restoreAnyApp();
+        await adb.restoreAnyApk(value)
+        common.dualLog('removing-apps-complete', 'green')
+        await common.pause(2000)
+        module.exports.mainMenu()
+    },
+
+    batchInstallApps: async () => {
+        common.header('main-menu-item-7')
+        common.log('main-menu-item-7')
 
         let apkList = await files.getListOfAPk('./my-apk/')
         await files.renameLocalApk(apkList)
@@ -145,8 +155,8 @@ module.exports = {
     },
 
     batchRemoveInstalledApps: async () => {
-        common.header('main-menu-item-7')
-        common.log('main-menu-item-7')
+        common.header('main-menu-item-8')
+        common.log('main-menu-item-8')
 
         value = await adb.getInstalledPacakges()
 
@@ -176,14 +186,7 @@ module.exports = {
     selectLanguage: async () => {
         common.header('Select Language')
         common.log('Select Language')
-        // const value = await inquirer.connectionType()
         const v = await inquirer.LanguageSelect()
-        // connected = await adb.watchConnection(value)
-        // if (connected != true) {
-        //     module.exports.connectWatch()
-        // } else {
-        //     module.exports.mainMenu()
-        // }
         return v
     },
 
@@ -199,6 +202,7 @@ module.exports = {
         menu_7 = await Language.get('main-menu-item-7')
         menu_8 = await Language.get('main-menu-item-8')
         menu_9 = await Language.get('main-menu-item-9')
+        menu_10 = await Language.get('main-menu-item-10')
 
         switch (mainMenuSelection.mainMenu) {
             case menu_1.toLowerCase():
@@ -217,15 +221,18 @@ module.exports = {
                 module.exports.restoreAnyApp()
                 break;
             case menu_6.toLowerCase():
-                module.exports.batchInstallApps()
+                module.exports.removeAnyApp()
                 break;
             case menu_7.toLowerCase():
-                module.exports.batchRemoveInstalledApps()
+                module.exports.batchInstallApps()
                 break;
             case menu_8.toLowerCase():
-                module.exports.connectWatch()
+                module.exports.batchRemoveInstalledApps()
                 break;
             case menu_9.toLowerCase():
+                module.exports.connectWatch()
+                break;
+            case menu_10.toLowerCase():
                 break;
             default:
             // code block

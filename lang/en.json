@@ -5,9 +5,10 @@
     "main-menu-item-3": "Restore Xiaomi Apps",
     "main-menu-item-4": "Install Compatible Apps",
     "main-menu-item-5": "Restore ANY app",
-    "main-menu-item-6": "Batch Install Apps",
-    "main-menu-item-7": "Batch Remove Installed Apps",
-    "main-menu-item-8": "Quit",
+    "main-menu-item-6": "Remove ANY app",
+    "main-menu-item-7": "Batch Install Apps",
+    "main-menu-item-8": "Batch Remove Installed Apps",
+    "main-menu-item-9": "Quit",
     "connection-type-message": "How do you want to connect?",
     "connect-wifi-message":"What is your MiWatch IpAdress?",
     "restore-app-message": "What apps do you want to restore?",
@@ -49,5 +50,7 @@
     "try-again": "Try Again",
     "connect-wifi-complete": "Connect Wifi Complete",
     "not-authenticated": "Not Authenticated",
-    "error": "Error"
+    "error": "Error",
+    "remove-any-app-message": "What App do you want to remove?",
+    "removing-apps-complete": "Removing Apps Complete"
 }
