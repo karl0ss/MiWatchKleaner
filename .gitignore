@@ -1,9 +1,7 @@
 node_modules/
-data/MiWatch.json
 data/apps/*.apk
 release/
 data/*.log
 logger.lock
 null.log
-.gitignore
 my_apk/*.apk
