@@ -4,6 +4,7 @@ const inquirer = require('../lib/inquirer');
 const files = require('../lib/files')
 const logger = require('perfect-logger');
 const Language = require("@shypes/language-translator");
+const globalVariables = require('../lib/globalVars');
 const adb = require('../lib/adb');
 
 logger.info(process.platform + " detected")
@@ -129,7 +130,7 @@ module.exports = {
     removeAnyApp: async () => {
         common.header('main-menu-item-6')
         common.log('main-menu-item-6')
-        const value = await inquirer.restoreAnyApp();
+        const value = await inquirer.removeAnyApp();
         await adb.restoreAnyApk(value)
         common.dualLog('removing-apps-complete', 'green')
         await common.pause(2000)
@@ -187,7 +188,8 @@ module.exports = {
         common.header('Select Language')
         common.log('Select Language')
         const v = await inquirer.LanguageSelect()
-        return v
+        globalVariables.language = v.selection
+        module.exports.connectWatch()
     },
 
     mainMenu: async () => {
@@ -202,7 +204,6 @@ module.exports = {
         menu_7 = await Language.get('main-menu-item-7')
         menu_8 = await Language.get('main-menu-item-8')
         menu_9 = await Language.get('main-menu-item-9')
-        menu_10 = await Language.get('main-menu-item-10')
 
         switch (mainMenuSelection.mainMenu) {
             case menu_1.toLowerCase():
@@ -230,9 +231,6 @@ module.exports = {
                 module.exports.batchRemoveInstalledApps()
                 break;
             case menu_9.toLowerCase():
-                module.exports.connectWatch()
-                break;
-            case menu_10.toLowerCase():
                 break;
             default:
             // code block
