@@ -5,7 +5,6 @@ const files = require('../lib/files')
 const logger = require('perfect-logger');
 const Language = require("@shypes/language-translator");
 const adb = require('../lib/adb');
-const { dualLog } = require('../lib/common');
 
 logger.info(process.platform + " detected")
 if (process.platform === 'win32' || process.platform === 'win64') {
@@ -174,35 +173,59 @@ module.exports = {
         }
     },
 
+    selectLanguage: async () => {
+        common.header('Select Language')
+        common.log('Select Language')
+        // const value = await inquirer.connectionType()
+        const v = await inquirer.LanguageSelect()
+        // connected = await adb.watchConnection(value)
+        // if (connected != true) {
+        //     module.exports.connectWatch()
+        // } else {
+        //     module.exports.mainMenu()
+        // }
+        return v
+    },
+
     mainMenu: async () => {
         common.header('Main Menu')
         const mainMenuSelection = await inquirer.mainMenu();
+        menu_1 = await Language.get('main-menu-item-1')
+        menu_2 = await Language.get('main-menu-item-2')
+        menu_3 = await Language.get('main-menu-item-3')
+        menu_4 = await Language.get('main-menu-item-4')
+        menu_5 = await Language.get('main-menu-item-5')
+        menu_6 = await Language.get('main-menu-item-6')
+        menu_7 = await Language.get('main-menu-item-7')
+        menu_8 = await Language.get('main-menu-item-8')
+        menu_9 = await Language.get('main-menu-item-9')
+
         switch (mainMenuSelection.mainMenu) {
-            case '1-click karl0ss klean':
+            case menu_1.toLowerCase():
                 module.exports.oneClick()
                 break;
-            case 'remove xiaomi apps':
+            case menu_2.toLowerCase():
                 module.exports.removeXiaomiApps()
                 break;
-            case 'restore xiaomi apps':
+            case menu_3.toLowerCase():
                 module.exports.restoreXiaomiApps()
                 break;
-            case 'install compatible apps':
+            case menu_4.toLowerCase():
                 module.exports.installCompatibleApps()
                 break;
-            case 'restore any app':
+            case menu_5.toLowerCase():
                 module.exports.restoreAnyApp()
                 break;
-            case 'batch install apps':
+            case menu_6.toLowerCase():
                 module.exports.batchInstallApps()
                 break;
-            case 'batch remove installed apps':
+            case menu_7.toLowerCase():
                 module.exports.batchRemoveInstalledApps()
                 break;
-            case 'connect to miwatch':
+            case menu_8.toLowerCase():
                 module.exports.connectWatch()
                 break;
-            case 'quit':
+            case menu_9.toLowerCase():
                 break;
             default:
             // code block

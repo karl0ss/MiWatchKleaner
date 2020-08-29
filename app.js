@@ -1,3 +1,14 @@
 const pages = require('./pages/pages')
+const Language = require("@shypes/language-translator");
+const globalVariables = require('./lib/globalVars');
 
-pages.connectWatch();
+async function main() {
+    lang = await pages.selectLanguage();
+    globalVariables.language = lang.selection
+    await pages.connectWatch()
+}
+
+main()
+
+
+
