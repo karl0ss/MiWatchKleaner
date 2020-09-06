@@ -172,10 +172,38 @@ module.exports = {
         module.exports.mainMenu()
     },
 
+
+    changeWatchDPI: async () => {
+        common.header('main-menu-item-10')
+        common.log('main-menu-item-10')
+
+        const defaultDPI = 320
+        const currentDPI = await adb.getCurrentDPI()
+        console.log(chalk.white(await Language.get('default-dpi-is') + ' ' + defaultDPI))
+        await common.pause(1000)
+        console.log(chalk.whiteBright(await Language.get('current-dpi-is') + ' ' + currentDPI))
+        if (currentDPI.includes('error')) {
+            common.dualLog('failed', 'red')
+            await common.pause(2000)
+            module.exports.mainMenu()
+        } else {
+            await common.pause(1000)
+            const v = await inquirer.setDPI()
+            const setDPIValue = v.setDPI
+
+            const t = await adb.setDPI(setDPIValue)
+
+            common.dualLog('complete', 'green')
+            await common.pause(2000)
+            module.exports.mainMenu()
+        }
+    },
+
     connectWatch: async () => {
         common.header('connect-to-watch')
         common.log('connect-to-watch')
         const value = await inquirer.connectionType()
+        await common.pause(1000)
         connected = await adb.watchConnection(value)
         if (connected != true) {
             module.exports.connectWatch()
@@ -204,6 +232,7 @@ module.exports = {
         menu_7 = await Language.get('main-menu-item-7')
         menu_8 = await Language.get('main-menu-item-8')
         menu_9 = await Language.get('main-menu-item-9')
+        menu_10 = await Language.get('main-menu-item-10')
 
         switch (mainMenuSelection.mainMenu) {
             case menu_1.toLowerCase():
@@ -229,6 +258,12 @@ module.exports = {
                 break;
             case menu_8.toLowerCase():
                 module.exports.batchRemoveInstalledApps()
+                break;
+            case '-----------------------':
+                module.exports.mainMenu()
+                break;
+            case menu_10.toLowerCase():
+                module.exports.changeWatchDPI()
                 break;
             case menu_9.toLowerCase():
                 break;
