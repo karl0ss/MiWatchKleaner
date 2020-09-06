@@ -10,7 +10,7 @@
     "main-menu-item-8": "Gỡ bỏ hàng loạt các phần mềm đã cài",
     "main-menu-item-9": "Thoát",
     "connection-type-message": "Bạn muốn chọn kết nối nào",
-    "connect-wifi-message":"Địa chỉ IP của Miwatch của bạn là gì?",
+    "connect-wifi-message": "Địa chỉ IP của Miwatch của bạn là gì?",
     "restore-app-message": "Những phần mềm nào bạn muốn Khôi phục?",
     "install-compatible-apps-message": "Những phần mềm nào bạn muốn Cài đặt?",
     "remove-installed-apps-message": "Những phần mềm đã cài đặt nào bạn muốn gỡ bỏ?",
@@ -52,5 +52,9 @@
     "not-authenticated": "Không thể xác thực",
     "error": "Lỗi",
     "remove-any-app-message": "Bạn muốn gỡ bỏ Phần mềm nào?",
-    "removing-apps-complete": "Gỡ bỏ Phần mềm hoàn tất"
+    "removing-apps-complete": "Gỡ bỏ Phần mềm hoàn tất",
+    "main-menu-item-10": "Thay đổi DPI của Đồng hồ",
+    "set-dpi-message": "Nhập Giá trị DPI Mới:",
+    "default-dpi-is": "DPI mặc định là",
+    "current-dpi-is": "DPI hiện tại là"
 }

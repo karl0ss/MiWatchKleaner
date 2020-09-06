@@ -10,7 +10,7 @@
     "main-menu-item-8": "Remover Apps por lote",
     "main-menu-item-9": "Sair",
     "connection-type-message": "Como você quer Conectar?",
-    "connect-wifi-message":"Qual o endereço IP do seu MiWatch?",
+    "connect-wifi-message": "Qual o endereço IP do seu MiWatch?",
     "restore-app-message": "Quais Apps você quer restaurar?",
     "install-compatible-apps-message": "Quais Apps você quer instalar?",
     "remove-installed-apps-message": "Quais APPs instalados você quer remover?",
@@ -52,5 +52,9 @@
     "not-authenticated": "Não Autenticado",
     "error": "Erro",
     "remove-any-app-message": "Qual App você quer remover?",
-    "removing-apps-complete": "Remoção de Apps Completa"
+    "removing-apps-complete": "Remoção de Apps Completa",
+    "main-menu-item-10": "Alterar DPI do relógio",
+    "set-dpi-message": "Digite o novo valor de DPI:",
+    "default-dpi-is": "O DPI padrão é",
+    "current-dpi-is": "o DPI atual é"
 }

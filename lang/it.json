@@ -52,5 +52,9 @@
     "not-authenticated": "Non Autenticato",
     "error": "Errore",
     "remove-any-app-message": "Che App vuoi rimuovere?",
-    "removing-apps-complete": "Rimozione Apps Completata"
+    "removing-apps-complete": "Rimozione Apps Completata",
+    "main-menu-item-10": "Cambia DPI orologio",
+    "set-dpi-message": "Immetti nuovo valore DPI:",
+    "default-dpi-is": "DPI predefinito è",
+    "current-dpi-is": "current DPI is"
 }

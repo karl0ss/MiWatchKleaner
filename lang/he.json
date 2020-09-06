@@ -52,5 +52,9 @@
     "not-authenticated": "לא התחבר",
     "error": "שגיאה",
     "remove-any-app-message": "איזה אפליקציות תרצה להסיר?",
-    "removing-apps-complete": "הסרה הושלמה בהצלחה"
+    "removing-apps-complete": "הסרה הושלמה בהצלחה",
+    "main-menu-item-10": "שנה DPI של שעון",
+    "set-dpi-message": "הזן ערך DPI חדש",
+    "default-dpi-is": "ברירת מחדל ל- DPI",
+    "current-dpi-is": "DPI הנוכחי הוא"
 }

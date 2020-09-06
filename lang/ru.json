@@ -10,7 +10,7 @@
     "main-menu-item-8": "Пакетное удаление приложений",
     "main-menu-item-9": "Выход",
     "connection-type-message": "Тип соединения с часами?",
-    "connect-wifi-message":"IP адрес ваших часов?",
+    "connect-wifi-message": "IP адрес ваших часов?",
     "restore-app-message": "Какие приложения вы хотите восстановить?",
     "install-compatible-apps-message": "Какие приложения вы хотите установить?",
     "remove-installed-apps-message": "Какие приложения из установленных вы хотите удалить?",
@@ -52,5 +52,9 @@
     "not-authenticated": "Не аутентифицировано",
     "error": "Ошибка",
     "remove-any-app-message": "Какое приложение вы хотите удалить?",
-    "removing-apps-complete": "Removing Apps Complete"
+    "removing-apps-complete": "Удаление приложений завершено",
+    "main-menu-item-10": "Изменить разрешение часов",
+    "set-dpi-message": "Введите новое значение DPI:",
+    "default-dpi-is": "DPI по умолчанию",
+    "current-dpi-is": "текущий DPI"
 }

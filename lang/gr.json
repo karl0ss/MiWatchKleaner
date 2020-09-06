@@ -10,7 +10,7 @@
     "main-menu-item-8": "Απεγκατάστησε ομάδα εγκατεστημένων εφαρμογών",
     "main-menu-item-9": "Έξοδος",
     "connection-type-message": "Πως θέλεις να συνδεθείς?",
-    "connect-wifi-message":"Ποια είναι η IP διεύθυνση του MiWatch?",
+    "connect-wifi-message": "Ποια είναι η IP διεύθυνση του MiWatch?",
     "restore-app-message": "Ποιες Εφαρμογές θέλεις να επαναφέρεις?",
     "install-compatible-apps-message": "Ποιες Εφαρμογές θέλεις να εγκαταστήσεις?",
     "remove-installed-apps-message": "Ποιες εγκατεστημένες Εφαρμογές θέλεις να απεγκαταστήσεις?",
@@ -52,5 +52,9 @@
     "not-authenticated": "Δεν πιστοποιήθηκε",
     "error": "Σφάλμα",
     "remove-any-app-message": "Ποια Εφαρμογή θέλεις να αφαιρέσεις?",
-    "removing-apps-complete": "Αφαίρεση εφαρμογών ολοκληρώθηκε"
+    "removing-apps-complete": "Αφαίρεση εφαρμογών ολοκληρώθηκε",
+    "main-menu-item-10": "Αλλαγή DPI παρακολούθησης",
+    "set-dpi-message": "Εισαγάγετε νέα τιμή DPI:",
+    "default-dpi-is": "Το προεπιλεγμένο DPI είναι",
+    "current-dpi-is": "το τρέχον DPI είναι"
 }

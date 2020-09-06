@@ -52,5 +52,9 @@
     "not-authenticated": "No Autenticado",
     "error": "Error",
     "remove-any-app-message": "¿Qué Aplicación quieres borrar?",
-    "removing-apps-complete": "Borrado de Aplicaciones Finalizado"
+    "removing-apps-complete": "Borrado de Aplicaciones Finalizado",
+    "main-menu-item-10": "Cambiar DPI del reloj",
+    "set-dpi-message": "Introduzca un nuevo valor de DPI:",
+    "default-dpi-is": "El DPI predeterminado es",
+    "current-dpi-is": "Actual DPI es"
 }
