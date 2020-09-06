@@ -52,5 +52,9 @@
     "not-authenticated": "Not Authenticated",
     "error": "Error",
     "remove-any-app-message": "What App do you want to remove?",
-    "removing-apps-complete": "Removing Apps Complete"
+    "removing-apps-complete": "Removing Apps Complete",
+    "main-menu-item-10": "Change Watch DPI",
+    "set-dpi-message": "Enter New DPI Value:",
+    "default-dpi-is": "Default DPI is",
+    "current-dpi-is": "Current DPI is"
 }
