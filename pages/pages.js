@@ -141,9 +141,9 @@ module.exports = {
         common.header('main-menu-item-7')
         common.log('main-menu-item-7')
 
-        let apkList = await files.getListOfAPk('./my-apk/')
+        let apkList = await files.getListOfAPk('./my_apk/')
         await files.renameLocalApk(apkList)
-        apkList = await files.getListOfAPk('./my-apk/')
+        apkList = await files.getListOfAPk('./my_apk/')
 
         for (let element of apkList) {
             console.log(await Language.get('installing') + ' ' + element)
