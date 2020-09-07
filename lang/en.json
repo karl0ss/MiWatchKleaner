@@ -10,7 +10,7 @@
     "main-menu-item-8": "Batch Remove Installed Apps",
     "main-menu-item-9": "Quit",
     "connection-type-message": "How do you want to connect?",
-    "connect-wifi-message":"What is your MiWatch IpAdress?",
+    "connect-wifi-message": "What is your MiWatch IpAdress?",
     "restore-app-message": "What apps do you want to restore?",
     "install-compatible-apps-message": "What apps do you want to Install?",
     "remove-installed-apps-message": "What Installed apps do you want to remove?",
@@ -56,5 +56,8 @@
     "main-menu-item-10": "Change Watch DPI",
     "set-dpi-message": "Enter New DPI Value:",
     "default-dpi-is": "Default DPI is",
-    "current-dpi-is": "Current DPI is"
+    "current-dpi-is": "Current DPI is",
+    "usb-one-device": "Make sure ONLY your watch is connected",
+    "accept-authorisation": "Please select \"Always Allow\" for authorisation on watch",
+    "usb-not-connected": "Make sure your watch is not connected via USB"
 }

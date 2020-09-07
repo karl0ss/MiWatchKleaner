@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://kithub.cf/Karl/MiWatchKleaner.git"
+    "url": "https://github.com/karl0ss/MiWatchKleaner.git"
   },
   "author": "Karl Hudgell",
   "license": "ISC",
@@ -28,6 +28,7 @@
     "node-fetch": "^2.6.0",
     "perfect-logger": "^2.0.1",
     "pkg": "^4.4.7",
+    "settings-store": "^1.4.1",
     "shell-exec": "^1.0.2",
     "shelljs": "^0.8.4"
   },
