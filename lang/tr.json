@@ -56,5 +56,8 @@
     "main-menu-item-10": "Saat DPI'yı Değiştir",
     "set-dpi-message": "Yeni DPI Değerini Girin:",
     "default-dpi-is": "Varsayılan DPI",
-    "current-dpi-is": "Geçerli DPI:"
+    "current-dpi-is": "Geçerli DPI:",
+    "usb-one-device": "YALNIZCA saatinizin bağlı olduğundan emin olun",
+    "accept-authorisation": "Saatte yetkilendirme için lütfen \"Her Zaman İzin Ver\" seçeneğini seçin",
+    "usb-not-connected": "Saatinizin USB ile bağlı olmadığından emin olun"
 }

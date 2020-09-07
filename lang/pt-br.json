@@ -56,5 +56,8 @@
     "main-menu-item-10": "Alterar DPI do relógio",
     "set-dpi-message": "Digite o novo valor de DPI:",
     "default-dpi-is": "O DPI padrão é",
-    "current-dpi-is": "o DPI atual é"
+    "current-dpi-is": "o DPI atual é",
+    "usb-one-device": "Certifique-se de que SOMENTE seu relógio esteja conectado",
+    "accept-authorisation": "Selecione \"Sempre permitir\" para autorização no relógio",
+    "usb-not-connected": "Certifique-se de que seu relógio não esteja conectado via USB"
 }

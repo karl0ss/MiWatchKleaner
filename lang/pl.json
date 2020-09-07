@@ -56,5 +56,8 @@
     "main-menu-item-10": "Zmień DPI zegarka",
     "set-dpi-message": "Wprowadź nową wartość DPI:",
     "default-dpi-is": "Default DPI to",
-    "bieżąca-dpi-to": "bieżąca wartość DPI to"
+    "bieżąca-dpi-to": "bieżąca wartość DPI to",
+    "usb-one-device": "Upewnij się, że TYLKO zegarek jest podłączony",
+    "accept-authorisation": "Aby uzyskać autoryzację na zegarku, wybierz Zawsze zezwalaj",
+    "usb-not-connected": "Upewnij się, że zegarek nie jest podłączony przez USB"
 }

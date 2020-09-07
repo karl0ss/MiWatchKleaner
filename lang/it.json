@@ -10,8 +10,8 @@
     "main-menu-item-8": "Rimuovi tutte le App Installate",
     "main-menu-item-9": "Esci",
     "connection-type-message": "Come vuoi connetterti?",
-    "connect-wifi-message":"Qualè l'indirizzo IP del tuo MiWatch?",
-	"restore-app-message": "Che apps vuoi ripristinare?",
+    "connect-wifi-message": "Qualè l'indirizzo IP del tuo MiWatch?",
+    "restore-app-message": "Che apps vuoi ripristinare?",
     "install-compatible-apps-message": "Che apps compatibili vuoi installare?",
     "remove-installed-apps-message": "Che apps Installate vuoi rimuovere?",
     "restore-any-app-message": "Che Apps vuoi ripristinare?",
@@ -56,5 +56,8 @@
     "main-menu-item-10": "Cambia DPI orologio",
     "set-dpi-message": "Immetti nuovo valore DPI:",
     "default-dpi-is": "DPI predefinito è",
-    "current-dpi-is": "current DPI is"
+    "current-dpi-is": "current DPI is",
+    "usb-one-device": "Assicurati che SOLO il tuo orologio sia connesso",
+    "accept-authorisation": "Seleziona \"Consenti sempre\" per l'autorizzazione sull'orologio",
+    "usb-not-connected": "Assicurati che l'orologio non sia connesso tramite USB"
 }

@@ -56,5 +56,8 @@
     "main-menu-item-10": "Thay đổi DPI của Đồng hồ",
     "set-dpi-message": "Nhập Giá trị DPI Mới:",
     "default-dpi-is": "DPI mặc định là",
-    "current-dpi-is": "DPI hiện tại là"
+    "current-dpi-is": "DPI hiện tại là",
+    "usb-one-device": "Đảm bảo CHỈ đồng hồ của bạn được kết nối",
+    "accept-authorisation": "Vui lòng chọn \"Luôn cho phép\" để ủy quyền trên đồng hồ",
+    "usb-not-connected": "Đảm bảo rằng đồng hồ của bạn không được kết nối qua USB"
 }

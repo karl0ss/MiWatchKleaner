@@ -56,5 +56,8 @@
     "main-menu-item-10": "Watch DPI wijzigen",
     "set-dpi-message": "Voer nieuwe DPI-waarde in:",
     "default-dpi-is": "Standaard DPI is",
-    "current-dpi-is": "huidige DPI is"
+    "current-dpi-is": "huidige DPI is",
+    "usb-one-device": "Zorg ervoor dat ALLEEN uw horloge is aangesloten",
+    "accept-authorisation": "Selecteer \"Altijd toestaan​​\" voor autorisatie op horloge",
+    "usb-not-connected": "Zorg ervoor dat uw horloge niet is aangesloten via USB"
 }

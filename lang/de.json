@@ -56,5 +56,8 @@
     "main-menu-item-10": "Watch DPI ändern",
     "set-dpi-message": "Neuen DPI-Wert eingeben:",
     "default-dpi-is": "Standard-DPI ist",
-    "current-dpi-is": "aktuelle DPI ist "
+    "current-dpi-is": "aktuelle DPI ist ",
+    "usb-one-device": "Stellen Sie sicher, dass NUR Ihre Uhr angeschlossen ist",
+    "accept-authorisation": "Bitte wählen Sie \"Immer zulassen\" für die Autorisierung auf der Uhr",
+    "usb-not-connected": "Stellen Sie sicher, dass Ihre Uhr nicht über USB angeschlossen ist"
 }

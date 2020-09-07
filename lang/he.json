@@ -56,5 +56,8 @@
     "main-menu-item-10": "שנה DPI של שעון",
     "set-dpi-message": "הזן ערך DPI חדש",
     "default-dpi-is": "ברירת מחדל ל- DPI",
-    "current-dpi-is": "DPI הנוכחי הוא"
+    "current-dpi-is": "DPI הנוכחי הוא",
+    "usb-one-device": "וודא שהשעון שלך מחובר רק",
+    "accept-authorisation": "אנא בחר תמיד אפשר לצורך הרשאה בשעון",
+    "usb-not-connected": "וודא שהשעון שלך אינו מחובר באמצעות USB"
 }

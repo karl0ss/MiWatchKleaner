@@ -56,5 +56,8 @@
     "main-menu-item-10": "Changer le DPI de la montre",
     "set-dpi-message": "Entrez une nouvelle valeur PPP:",
     "default-dpi-is": "Le DPI par défaut est",
-    "current-dpi-is": "Le DPI actuel est"
+    "current-dpi-is": "Le DPI actuel est",
+    "usb-one-device": "Assurez-vous que SEULE votre montre est connectée",
+    "accept-authorisation": "Veuillez sélectionner \"Toujours autoriser\" pour l'autorisation sur la montre",
+    "usb-not-connected": "Assurez-vous que votre montre n'est pas connectée via USB"
 }
