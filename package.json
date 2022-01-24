@@ -30,7 +30,7 @@
     "pkg": "^4.4.7",
     "settings-store": "^1.4.1",
     "shell-exec": "^1.0.2",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.5"
   },
   "pkg": {
     "scripts": [],
