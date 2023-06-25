@@ -27,7 +27,7 @@
     "inquirer": "^7.1.0",
     "node-fetch": "^3.2.10",
     "perfect-logger": "^2.0.1",
-    "pkg": "^4.4.7",
+    "pkg": "^5.8.1",
     "settings-store": "^1.4.1",
     "shell-exec": "^1.0.2",
     "shelljs": "^0.8.5"
